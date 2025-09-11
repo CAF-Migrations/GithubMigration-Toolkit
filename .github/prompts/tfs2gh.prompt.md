@@ -8,6 +8,7 @@ description: 'Team Foundation Server to GitHub Enterprise Migration Assistant'
 ## Prerequisites
 
 ### Tools Required
+- Chocolatey (package manager for Git-TFS)
 - Git-TFS (ESSENTIAL for TFVC conversion)
 - GitHub CLI with ADO2GH extension
 - Git CLI
@@ -15,7 +16,16 @@ description: 'Team Foundation Server to GitHub Enterprise Migration Assistant'
 ### Tool Installation
 ```powershell
 # Windows PowerShell (STRONGLY RECOMMENDED for TFS)
-choco install gittfs
+
+# Install Chocolatey (required for git-tfs)
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+# Install Git-TFS (ESSENTIAL for TFVC to Git conversion)
+choco install gittfs --ignore-dependencies
+
+# Pre-installed on GitHub Actions runners
 gh --version
 gh extension install github/gh-ado2gh
 git --version

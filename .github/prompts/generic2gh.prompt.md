@@ -34,6 +34,10 @@ Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
 az extension add --name azure-devops
 
 # TFS migrations
+# Install Chocolatey (required for git-tfs)
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 choco install gittfs
 
 # SVN migrations

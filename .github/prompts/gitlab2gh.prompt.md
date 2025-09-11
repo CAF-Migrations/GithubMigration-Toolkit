@@ -16,11 +16,15 @@ description: 'GitLab to GitHub Enterprise Migration Assistant'
 ### Tool Installation
 ```powershell
 # Windows PowerShell
+# Note: In GitHub Actions, Python 3.11+ and Node.js 18+ are set up using actions
+# For local environments, ensure Python 3.11+ and Node.js 18+ are installed
+
+# Pre-installed on GitHub Actions runners
 gh --version
 git --version
-python --version
+
+# Install Python GitLab library
 pip install python-gitlab
-node --version
 
 # Verify installations
 gh --version
