@@ -74,9 +74,9 @@ jobs:
         # Check if git-tfs is in PATH
         $gitTfsPath = Get-Command "git-tfs" -ErrorAction SilentlyContinue
         if ($gitTfsPath) {
-          Write-Output "✅ git-tfs found at: $($gitTfsPath.Source)"
+          Write-Output "SUCCESS: git-tfs found at: $($gitTfsPath.Source)"
         } else {
-          Write-Output "⚠️ git-tfs not found in PATH, checking Chocolatey installation..."
+          Write-Output "WARNING: git-tfs not found in PATH, checking Chocolatey installation..."
           $chocoList = choco list --local-only gittfs
           Write-Output "Chocolatey output: $chocoList"
         }
@@ -84,16 +84,16 @@ jobs:
         # Try to execute git-tfs with error handling
         try {
           $tfsVersion = git tfs --version 2>&1
-          Write-Output "✅ git-tfs version check: $tfsVersion"
+          Write-Output "SUCCESS: git-tfs version check: $tfsVersion"
         } catch {
-          Write-Output "ℹ️ git-tfs version command had issues, trying help command..."
+          Write-Output "INFO: git-tfs version command had issues, trying help command..."
           try {
             $tfsHelp = git tfs help 2>&1
             if ($tfsHelp -match "usage|commands|help") {
-              Write-Output "✅ git-tfs help command working correctly"
+              Write-Output "SUCCESS: git-tfs help command working correctly"
             }
           } catch {
-            Write-Output "❌ git-tfs commands not responding"
+            Write-Output "ERROR: git-tfs commands not responding"
             throw "git-tfs installation verification failed"
           }
         }
