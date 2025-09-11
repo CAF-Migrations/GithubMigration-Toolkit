@@ -52,6 +52,19 @@ jobs:
         git --version
       shell: powershell
 
+    - name: Install Chocolatey (required for git-tfs)
+      run: |
+        Set-ExecutionPolicy Bypass -Scope Process -Force
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+        iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+      shell: powershell
+
+    - name: Install Git-TFS (ESSENTIAL for TFVC with >90 days history)
+      run: |
+        choco install gittfs
+        echo "C:/tools/gittfs" >> $GITHUB_PATH
+      shell: bash
+
     - name: Verify GitHub CLI installation
       run: |
         gh --version
@@ -86,6 +99,45 @@ jobs:
     - name: Verify Git CLI installation
       run: |
         git --version
+      shell: powershell
+
+    - name: Verify Git-TFS installation (CRITICAL for TFVC)
+      run: |
+        # GitHub Actions specific verification
+        Write-Output "Checking git-tfs installation..."
+        
+        # Refresh PATH to include Chocolatey paths
+        if (-not ($env:PATH -like "*chocolatey*")) {
+          $env:PATH = "$env:PATH;C:\ProgramData\chocolatey\bin"
+          echo "C:\ProgramData\chocolatey\bin" >> $env:GITHUB_PATH
+        }
+        
+        # Check if git-tfs is in PATH
+        $gitTfsPath = Get-Command "git-tfs" -ErrorAction SilentlyContinue
+        if ($gitTfsPath) {
+          Write-Output "SUCCESS: git-tfs found at: $($gitTfsPath.Source)"
+        } else {
+          Write-Output "WARNING: git-tfs not found in PATH, checking Chocolatey installation..."
+          $chocoList = choco list --local-only gittfs
+          Write-Output "Chocolatey output: $chocoList"
+        }
+        
+        # Try to execute git-tfs with error handling
+        try {
+          $tfsVersion = git tfs --version 2>&1
+          Write-Output "SUCCESS: git-tfs version check: $tfsVersion"
+        } catch {
+          Write-Output "INFO: git-tfs version command had issues, trying help command..."
+          try {
+            $tfsHelp = git tfs help 2>&1
+            if ($tfsHelp -match "usage|commands|help") {
+              Write-Output "SUCCESS: git-tfs help command working correctly"
+            }
+          } catch {
+            Write-Output "ERROR: git-tfs commands not responding"
+            throw "git-tfs installation verification failed"
+          }
+        }
       shell: powershell
 
     - name: Test Azure DevOps Server Connection Configuration

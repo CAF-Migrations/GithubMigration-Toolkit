@@ -15,7 +15,7 @@ description: 'Team Foundation Server to GitHub Enterprise Migration Assistant'
 ### Tool Installation
 ```powershell
 # Windows PowerShell (STRONGLY RECOMMENDED for TFS)
-choco install gittfs -y --ignore-dependencies
+choco install gittfs
 gh --version
 gh extension install github/gh-ado2gh
 git --version

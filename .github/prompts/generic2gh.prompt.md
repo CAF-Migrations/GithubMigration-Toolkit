@@ -34,7 +34,7 @@ Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
 az extension add --name azure-devops
 
 # TFS migrations
-choco install gittfs -y
+choco install gittfs
 
 # SVN migrations
 choco install strawberryperl -y

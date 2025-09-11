@@ -31,7 +31,7 @@ jobs:
 
     - name: Install Git-TFS (ESSENTIAL for TFVC to Git conversion)
       run: |
-        choco install gittfs -y --ignore-dependencies
+        choco install gittfs
         echo "C:/tools/gittfs" >> $GITHUB_PATH
       shell: bash
 
