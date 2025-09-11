@@ -82,8 +82,8 @@ jobs:
         # Python GitLab library
         pip install python-gitlab
         
-        # GitLab to GitHub migrator
-        npm install -g gitlab-to-github-migrator
+        # Note: gitlab-to-github-migrator npm package is not available publicly
+        # Using alternative tools for GitLab migration verification
         
       shell: powershell
 
@@ -178,10 +178,8 @@ jobs:
         # Validation complete
         node --version
         
-        try {
-          npm list -g gitlab-to-github-migrator 2>&1 | Out-Null
-        } catch {
-        }
+        # Note: gitlab-to-github-migrator npm package verification skipped (not publicly available)
+        Write-Output "✅ Node.js available for custom migration scripts"
       shell: powershell
 
     - name: Platform Compatibility Summary

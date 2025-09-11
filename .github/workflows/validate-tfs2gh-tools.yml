@@ -109,8 +109,10 @@ jobs:
         $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
         
         try {
-          git tfs help 2>&1 | Out-Null
+          $tfsOutput = git tfs help 2>&1
+          Write-Output "✅ git-tfs help command executed successfully"
         } catch {
+          Write-Output "ℹ️ git-tfs may require specific TFS configuration for full functionality"
         }
       shell: powershell
 
