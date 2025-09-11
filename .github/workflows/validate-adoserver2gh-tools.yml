@@ -1,0 +1,121 @@
+name: Validate Azure DevOps Server to GitHub Migration Tools
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - '.github/prompts/adoserver2gh.prompt.md'
+      - '.github/workflows/validate-adoserver2gh-tools.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/prompts/adoserver2gh.prompt.md'
+      - '.github/workflows/validate-adoserver2gh-tools.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-tools:
+    runs-on: windows-latest
+    name: Validate ADO Server to GitHub Migration Tools Installation
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install GitHub CLI
+      run: |
+        winget install GitHub.cli
+        Write-Host "GitHub CLI installed"
+      shell: powershell
+
+    - name: Install GitHub Enterprise Importer extension
+      run: |
+        gh extension install github/gh-migration
+        Write-Host "GitHub Enterprise Importer extension installed"
+      shell: powershell
+
+    - name: Install Azure CLI
+      run: |
+        winget install Microsoft.AzureCLI
+        Write-Host "Azure CLI installed"
+      shell: powershell
+
+    - name: Install Azure DevOps extension
+      run: |
+        az extension add --name azure-devops
+        Write-Host "Azure DevOps extension installed"
+      shell: powershell
+
+    - name: Install Git CLI
+      run: |
+        winget install Git.Git
+        Write-Host "Git CLI installed"
+      shell: powershell
+
+    - name: Verify GitHub CLI installation
+      run: |
+        gh --version
+        Write-Host "✅ GitHub CLI version verified"
+      shell: powershell
+
+    - name: Verify GitHub Enterprise Importer extension
+      run: |
+        $extensions = gh extension list
+        if ($extensions -match "migration") {
+          Write-Host "✅ GitHub Enterprise Importer extension verified"
+        } else {
+          throw "❌ GitHub Enterprise Importer extension not found"
+        }
+      shell: powershell
+
+    - name: Verify Azure CLI installation
+      run: |
+        az --version
+        Write-Host "✅ Azure CLI version verified"
+      shell: powershell
+
+    - name: Verify Azure DevOps extension
+      run: |
+        $extensions = az extension list --output json | ConvertFrom-Json
+        $devopsExt = $extensions | Where-Object { $_.name -eq "azure-devops" }
+        if ($devopsExt) {
+          Write-Host "✅ Azure DevOps extension verified"
+        } else {
+          throw "❌ Azure DevOps extension not found"
+        }
+      shell: powershell
+
+    - name: Verify Git CLI installation
+      run: |
+        git --version
+        Write-Host "✅ Git CLI version verified"
+      shell: powershell
+
+    - name: Test Azure DevOps Server Connection Configuration
+      run: |
+        Write-Host "Testing Azure DevOps Server connection configuration capability..."
+        # Test that the configuration command exists (without actual connection)
+        az devops configure --help
+        Write-Host "✅ Azure DevOps Server configuration capability verified"
+      shell: powershell
+
+    - name: Verify PowerShell availability for Windows Server environments
+      run: |
+        $PSVersionTable.PSVersion
+        Write-Host "✅ PowerShell version verified (recommended for Windows Server environments)"
+      shell: powershell
+
+    - name: Tool Verification Summary
+      run: |
+        Write-Host "=================================================================="
+        Write-Host "🎉 ALL AZURE DEVOPS SERVER TO GITHUB MIGRATION TOOLS VALIDATED"
+        Write-Host "=================================================================="
+        Write-Host "✅ GitHub CLI installed and accessible"
+        Write-Host "✅ GitHub Enterprise Importer extension installed"
+        Write-Host "✅ Azure CLI installed"
+        Write-Host "✅ Azure DevOps extension installed"
+        Write-Host "✅ Git CLI accessible"
+        Write-Host "✅ Azure DevOps Server configuration capability verified"
+        Write-Host "✅ PowerShell available (recommended for Windows Server environments)"
+        Write-Host "=================================================================="
+      shell: powershell

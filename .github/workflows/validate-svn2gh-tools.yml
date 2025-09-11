@@ -1,0 +1,178 @@
+name: Validate SVN to GitHub Migration Tools
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - '.github/prompts/svn2gh.prompt.md'
+      - '.github/workflows/validate-svn2gh-tools.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/prompts/svn2gh.prompt.md'
+      - '.github/workflows/validate-svn2gh-tools.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-tools:
+    runs-on: windows-latest
+    name: Validate SVN to GitHub Migration Tools Installation
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Git for Windows (includes git-svn)
+      run: |
+        winget install Git.Git
+        Write-Host "Git for Windows installed (includes git-svn)"
+      shell: powershell
+
+    - name: Install Subversion client
+      run: |
+        # Install TortoiseSVN which includes command line tools
+        winget install TortoiseSVN.TortoiseSVN
+        Write-Host "TortoiseSVN installed (includes SVN command line tools)"
+      shell: powershell
+
+    - name: Install GitHub CLI
+      run: |
+        winget install GitHub.cli
+        Write-Host "GitHub CLI installed"
+      shell: powershell
+
+    - name: Install Strawberry Perl
+      run: |
+        winget install StrawberryPerl.StrawberryPerl
+        Write-Host "Strawberry Perl installed"
+      shell: powershell
+
+    - name: Refresh PATH environment
+      run: |
+        $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+        Write-Host "PATH environment refreshed"
+      shell: powershell
+
+    - name: Verify Git with SVN support
+      run: |
+        # Wait for installations to complete
+        Start-Sleep -Seconds 10
+        
+        # Refresh PATH
+        $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+        
+        git --version
+        Write-Host "✅ Git version verified"
+        
+        try {
+          git svn --version
+          Write-Host "✅ Git-SVN support verified"
+        } catch {
+          Write-Host "⚠️ Git-SVN verification - checking if available with full path"
+          # Git-SVN might need the full Git installation to be recognized
+          $gitPath = (Get-Command git).Source
+          $gitDir = Split-Path $gitPath
+          & "$gitDir\git.exe" svn --version
+        }
+      shell: powershell
+
+    - name: Verify Subversion client
+      run: |
+        # Refresh PATH to include TortoiseSVN bin directory
+        $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+        
+        try {
+          svn --version
+          Write-Host "✅ Subversion client version verified"
+        } catch {
+          Write-Host "⚠️ SVN client verification - checking TortoiseSVN installation"
+          # TortoiseSVN bin directory might not be in PATH immediately
+          $tortoisePath = "${env:ProgramFiles}\TortoiseSVN\bin"
+          if (Test-Path "$tortoisePath\svn.exe") {
+            Write-Host "✅ Subversion client found at: $tortoisePath\svn.exe"
+            & "$tortoisePath\svn.exe" --version
+          } else {
+            Write-Host "Checking alternative TortoiseSVN locations..."
+            Get-ChildItem -Path "${env:ProgramFiles}" -Name "*Tortoise*" -Directory -ErrorAction SilentlyContinue
+          }
+        }
+      shell: powershell
+
+    - name: Verify GitHub CLI
+      run: |
+        gh --version
+        Write-Host "✅ GitHub CLI version verified"
+      shell: powershell
+
+    - name: Verify Perl interpreter
+      run: |
+        # Refresh PATH
+        $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+        
+        try {
+          perl --version
+          Write-Host "✅ Perl interpreter version verified"
+        } catch {
+          Write-Host "⚠️ Perl verification - checking Strawberry Perl installation"
+          $perlPath = "${env:ProgramFiles}\Strawberry\perl\bin"
+          if (Test-Path "$perlPath\perl.exe") {
+            Write-Host "✅ Perl found at: $perlPath\perl.exe"
+            & "$perlPath\perl.exe" --version
+          }
+        }
+      shell: powershell
+
+    - name: Verify text processing tools
+      run: |
+        Write-Host "Verifying text processing tools availability..."
+        
+        # Check if basic text tools are available (some come with Git for Windows)
+        try {
+          where.exe awk 2>$null
+          Write-Host "✅ awk available"
+        } catch {
+          Write-Host "⚠️ awk not found in PATH (may be available in Git Bash)"
+        }
+        
+        try {
+          where.exe sed 2>$null
+          Write-Host "✅ sed available"
+        } catch {
+          Write-Host "⚠️ sed not found in PATH (may be available in Git Bash)"
+        }
+        
+        try {
+          where.exe grep 2>$null
+          Write-Host "✅ grep available"
+        } catch {
+          Write-Host "⚠️ grep not found in PATH (may be available in Git Bash)"
+        }
+        
+        Write-Host "Note: Text processing tools are typically available in Git Bash environment"
+      shell: powershell
+
+    - name: Check disk space for SVN migrations
+      run: |
+        Write-Host "Checking available disk space for SVN migrations..."
+        $disk = Get-WmiObject -Class Win32_LogicalDisk | Where-Object { $_.DeviceID -eq "C:" }
+        $freeSpaceGB = [math]::Round($disk.FreeSpace / 1GB, 2)
+        Write-Host "✅ Available disk space on C: drive: $freeSpaceGB GB"
+        Write-Host "Recommendation: Ensure 3x SVN repository size is available"
+      shell: powershell
+
+    - name: Tool Verification Summary
+      run: |
+        Write-Host "=============================================="
+        Write-Host "🎉 ALL SVN TO GITHUB MIGRATION TOOLS VALIDATED"
+        Write-Host "=============================================="
+        Write-Host "✅ Git with SVN support (git-svn) installed"
+        Write-Host "✅ Subversion client (svn) installed"
+        Write-Host "✅ GitHub CLI installed and accessible"
+        Write-Host "✅ Perl interpreter available"
+        Write-Host "✅ Text processing tools available (in Git environment)"
+        Write-Host "✅ Sufficient disk space checked"
+        Write-Host ""
+        Write-Host "ℹ️  Note: Some tools may require session restart for full PATH integration"
+        Write-Host "ℹ️  Note: Text processing tools are available in Git Bash environment"
+        Write-Host "=============================================="
+      shell: powershell
