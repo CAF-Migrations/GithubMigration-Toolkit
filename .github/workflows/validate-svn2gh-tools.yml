@@ -71,11 +71,11 @@ jobs:
         $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
         
         git --version
-        Write-Host "✅ Git version verified"
+        Write-Host "� Git version verified"
         
         try {
           git svn --version
-          Write-Host "✅ Git-SVN support verified"
+          Write-Host "� Git-SVN support verified"
         } catch {
           Write-Host "⚠️ Git-SVN verification - checking if available with full path"
           # Git-SVN might need the full Git installation to be recognized
@@ -92,13 +92,13 @@ jobs:
         
         try {
           svn --version
-          Write-Host "✅ Subversion client version verified"
+          Write-Host "� Subversion client version verified"
         } catch {
           Write-Host "⚠️ SVN client verification - checking TortoiseSVN installation"
           # TortoiseSVN bin directory might not be in PATH immediately
           $tortoisePath = "${env:ProgramFiles}\TortoiseSVN\bin"
           if (Test-Path "$tortoisePath\svn.exe") {
-            Write-Host "✅ Subversion client found at: $tortoisePath\svn.exe"
+            Write-Host "� Subversion client found at: $tortoisePath\svn.exe"
             & "$tortoisePath\svn.exe" --version
           } else {
             Write-Host "Checking alternative TortoiseSVN locations..."
@@ -110,7 +110,7 @@ jobs:
     - name: Verify GitHub CLI
       run: |
         gh --version
-        Write-Host "✅ GitHub CLI version verified"
+        Write-Host "� GitHub CLI version verified"
       shell: powershell
 
     - name: Verify Perl interpreter
@@ -120,12 +120,12 @@ jobs:
         
         try {
           perl --version
-          Write-Host "✅ Perl interpreter version verified"
+          Write-Host "� Perl interpreter version verified"
         } catch {
           Write-Host "⚠️ Perl verification - checking Strawberry Perl installation"
           $perlPath = "${env:ProgramFiles}\Strawberry\perl\bin"
           if (Test-Path "$perlPath\perl.exe") {
-            Write-Host "✅ Perl found at: $perlPath\perl.exe"
+            Write-Host "� Perl found at: $perlPath\perl.exe"
             & "$perlPath\perl.exe" --version
           }
         }
@@ -138,21 +138,21 @@ jobs:
         # Check if basic text tools are available (some come with Git for Windows)
         try {
           where.exe awk 2>$null
-          Write-Host "✅ awk available"
+          Write-Host "� awk available"
         } catch {
           Write-Host "⚠️ awk not found in PATH (may be available in Git Bash)"
         }
         
         try {
           where.exe sed 2>$null
-          Write-Host "✅ sed available"
+          Write-Host "� sed available"
         } catch {
           Write-Host "⚠️ sed not found in PATH (may be available in Git Bash)"
         }
         
         try {
           where.exe grep 2>$null
-          Write-Host "✅ grep available"
+          Write-Host "� grep available"
         } catch {
           Write-Host "⚠️ grep not found in PATH (may be available in Git Bash)"
         }
@@ -165,7 +165,7 @@ jobs:
         Write-Host "Checking available disk space for SVN migrations..."
         $disk = Get-WmiObject -Class Win32_LogicalDisk | Where-Object { $_.DeviceID -eq "C:" }
         $freeSpaceGB = [math]::Round($disk.FreeSpace / 1GB, 2)
-        Write-Host "✅ Available disk space on C: drive: $freeSpaceGB GB"
+        Write-Host "� Available disk space on C: drive: $freeSpaceGB GB"
         Write-Host "Recommendation: Ensure 3x SVN repository size is available"
       shell: powershell
 
@@ -174,14 +174,15 @@ jobs:
         Write-Host "=============================================="
         Write-Host "🎉 ALL SVN TO GITHUB MIGRATION TOOLS VALIDATED"
         Write-Host "=============================================="
-        Write-Host "✅ Git with SVN support (git-svn) installed"
-        Write-Host "✅ Subversion client (svn) installed"
-        Write-Host "✅ GitHub CLI installed and accessible"
-        Write-Host "✅ Perl interpreter available"
-        Write-Host "✅ Text processing tools available (in Git environment)"
-        Write-Host "✅ Sufficient disk space checked"
+        Write-Host "� Git with SVN support (git-svn) installed"
+        Write-Host "� Subversion client (svn) installed"
+        Write-Host "� GitHub CLI installed and accessible"
+        Write-Host "� Perl interpreter available"
+        Write-Host "� Text processing tools available (in Git environment)"
+        Write-Host "� Sufficient disk space checked"
         Write-Host ""
         Write-Host "ℹ️  Note: Some tools may require session restart for full PATH integration"
         Write-Host "ℹ️  Note: Text processing tools are available in Git Bash environment"
         Write-Host "=============================================="
       shell: powershell
+
