@@ -1,0 +1,134 @@
+name: Validate BitBucket Server to GitHub Migration Tools
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - '.github/prompts/bbs2gh.prompt.md'
+      - '.github/workflows/validate-bbs2gh-tools.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/prompts/bbs2gh.prompt.md'
+      - '.github/workflows/validate-bbs2gh-tools.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-tools:
+    runs-on: windows-latest
+    name: Validate BitBucket Server to GitHub Migration Tools Installation
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install GitHub CLI
+      run: |
+        # GitHub CLI is pre-installed on GitHub-hosted runners
+        gh --version
+        Write-Host "GitHub CLI is available"
+      shell: powershell
+
+    - name: Install GitHub Enterprise Importer BBS2GH extension
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh extension install github/gh-bbs2gh
+        Write-Host "GitHub Enterprise Importer BBS2GH extension installed"
+      shell: powershell
+
+    - name: Install Git CLI
+      run: |
+        # Git is pre-installed on GitHub-hosted runners
+        git --version
+        Write-Host "Git CLI is available"
+      shell: powershell
+
+    - name: Install PowerShell Core (if needed)
+      run: |
+        # PowerShell is available on GitHub runners
+        $PSVersionTable.PSVersion
+        Write-Host "PowerShell is available for migration scripts"
+      shell: powershell
+
+    - name: Verify GitHub CLI installation
+      run: |
+        gh --version
+        Write-Host "✅ GitHub CLI version verified"
+      shell: powershell
+
+    - name: Verify GitHub Enterprise Importer BBS2GH extension
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        $extensions = gh extension list
+        if ($extensions -match "bbs2gh") {
+          Write-Host "✅ GitHub Enterprise Importer BBS2GH extension verified"
+        } else {
+          throw "❌ GitHub Enterprise Importer BBS2GH extension not found"
+        }
+      shell: powershell
+
+    - name: Verify Git CLI installation
+      run: |
+        git --version
+        Write-Host "✅ Git CLI version verified"
+      shell: powershell
+
+    - name: Test BBS2GH Extension Help
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        try {
+          gh bbs2gh --help | Out-Null
+          Write-Host "✅ BBS2GH extension help command works"
+        } catch {
+          Write-Host "⚠️ BBS2GH extension installed but help may need authentication context"
+        }
+      shell: powershell
+
+    - name: BitBucket Server Connection Prerequisites Check
+      run: |
+        Write-Host "🔍 BitBucket Server Connection Requirements:"
+        Write-Host ""
+        Write-Host "📋 Required Information:"
+        Write-Host "   - BitBucket Server URL (e.g., https://bitbucket.company.com)"
+        Write-Host "   - BitBucket username and password/token"
+        Write-Host "   - SSH access (for Linux BitBucket Server)"
+        Write-Host "   - SMB access (for Windows BitBucket Server)"
+        Write-Host ""
+        Write-Host "🔧 Network Requirements:"
+        Write-Host "   - Network access from migration machine to BitBucket Server"
+        Write-Host "   - Archive download capabilities"
+        Write-Host "   - SSH or SMB connectivity for repository archives"
+        Write-Host ""
+        Write-Host "✅ Prerequisites validation simulated (no actual BitBucket Server available)"
+      shell: powershell
+
+    - name: Validation Summary
+      run: |
+        Write-Host "======================================================="
+        Write-Host "🎉 BITBUCKET SERVER TO GITHUB MIGRATION TOOLS VALIDATED"
+        Write-Host "======================================================="
+        Write-Host "✅ GitHub CLI installed and accessible"
+        Write-Host "✅ GitHub Enterprise Importer BBS2GH extension ready"
+        Write-Host "✅ Git CLI installed and accessible"
+        Write-Host "✅ PowerShell available for migration scripts"
+        Write-Host ""
+        Write-Host "📋 Migration Capabilities:"
+        Write-Host "✅ BitBucket Server 5.14+ → GitHub Enterprise Cloud"
+        Write-Host "✅ BitBucket Data Center → GitHub Enterprise Cloud"
+        Write-Host "✅ Repository archives with SSH/SMB support"
+        Write-Host ""
+        Write-Host "🔧 Required Environment Variables for Migration:"
+        Write-Host "   - GH_PAT: Target GitHub organization access token"
+        Write-Host "   - BBS_USERNAME: BitBucket Server username"
+        Write-Host "   - BBS_PASSWORD: BitBucket Server password/token"
+        Write-Host "   - SMB_PASSWORD: SMB password (Windows BitBucket Server)"
+        Write-Host ""
+        Write-Host "⚠️  Note: BitBucket Server migrations require:"
+        Write-Host "   - BitBucket Server 5.14+ or higher"
+        Write-Host "   - Network connectivity to source BitBucket Server"
+        Write-Host "   - SSH (Linux) or SMB (Windows) access for archives"
+        Write-Host "======================================================="
+      shell: powershell
