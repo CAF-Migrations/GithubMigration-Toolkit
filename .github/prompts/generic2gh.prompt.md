@@ -17,9 +17,19 @@ Verify and install base CLI tools for GitHub migration:
 **Core Required CLI Tools:**
 - GitHub CLI (gh) - Essential for all GitHub operations
 - Git CLI (git) - Version control operations
-- Platform-specific tools (determined based on source platform)
+- Python 3.11+ (for GitLab and other migration scripts)
+- Node.js 18+ (for various migration tools)
 
-**Base Tool Installation Commands:**
+**Platform-Specific Migration Tools (All Installed):**
+- Azure CLI (az) with DevOps extension - For Azure DevOps migrations
+- Git-TFS (git-tfs) - For TFS Server TFVC conversions
+- Subversion client (svn) - For SVN repository migrations
+- Strawberry Perl - For git-svn operations
+- GitLab CLI (glab) - For GitLab API operations
+- Python-GitLab library - For GitLab migrations
+- Chocolatey - Package manager for Windows tool installations
+
+**Tool Installation Commands:**
 
 ```bash
 # Linux/macOS
@@ -31,6 +41,17 @@ sudo apt update && sudo apt install gh
 sudo apt install git  # Linux
 brew install git      # macOS
 
+# Platform-specific tools
+sudo apt install subversion git-svn python3 nodejs npm
+pip3 install python-gitlab
+
+# GitLab CLI (Linux)
+curl -s https://raw.githubusercontent.com/profclems/glab/trunk/scripts/install.sh | sudo bash
+
+# Azure CLI (Linux)
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+az extension add --name azure-devops
+
 # Verify base installations
 gh --version
 git --version
@@ -38,42 +59,67 @@ git --version
 
 ```powershell
 # Windows PowerShell
-# GitHub CLI (pre-installed on most systems, or download from github.com/cli/cli)
-# Verify GitHub CLI is available
+# GitHub CLI is pre-installed on GitHub-hosted runners
 gh --version
 
-# Git (pre-installed on most development systems, or download from git-scm.com)
-# Verify Git is available
+# Git is pre-installed on GitHub-hosted runners  
 git --version
 
-# Alternative installation methods if not available:
-# GitHub CLI: Download from https://github.com/cli/cli/releases
-# Git: Download from https://git-scm.com/downloads
+# Install Chocolatey package manager
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
-# For CI/CD environments like GitHub Actions:
-# - GitHub CLI and Git are pre-installed on GitHub-hosted runners
-# - For self-hosted runners, install manually or use package managers like Chocolatey
+# Azure CLI for Azure DevOps migrations
+Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
+Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
+az extension add --name azure-devops
+
+# Git-TFS for TFS Server migrations
+choco install gittfs -y
+
+# Strawberry Perl for git-svn operations
+choco install strawberryperl -y
+
+# Subversion client for SVN migrations  
+choco install svn -y
+
+# GitLab CLI for GitLab migrations
+# Download from GitLab CLI releases and install manually
+$glabUrl = "https://github.com/profclems/glab/releases/download/v1.45.0/glab_1.45.0_Windows_x86_64.zip"
+$glabZip = "$env:TEMP\glab.zip"
+$glabDir = "$env:TEMP\glab"
+Invoke-WebRequest -Uri $glabUrl -OutFile $glabZip
+Expand-Archive -Path $glabZip -DestinationPath $glabDir -Force
+$destinationPath = "$env:ProgramFiles\GitLab CLI"
+New-Item -ItemType Directory -Path $destinationPath -Force
+Copy-Item "$glabDir\glab.exe" "$destinationPath\glab.exe" -Force
+
+# Python GitLab library for GitLab migrations
+pip install python-gitlab
+
+# Python 3.11+ and Node.js 18+ are pre-installed via GitHub Actions setup
+python --version
+node --version
 ```
 
-**Platform-Specific Tool Requirements:**
-Based on your source platform, additional tools may be required:
-
-- **Azure DevOps**: Azure CLI (`az`) with DevOps extension
-- **TFS Server**: Git-TFS (`git-tfs`), TFS Power Tools
-- **GitLab**: GitLab CLI (`glab`), Python with python-gitlab
-- **SVN**: Git-SVN (`git-svn`), Subversion client (`svn`)
-- **Bitbucket**: Bitbucket CLI, Git
-- **Perforce**: P4 CLI, Git-P4
-- **Mercurial**: Git-HG, Mercurial client
-
-**Base Tool Verification Checklist:**
+**Tool Verification Checklist:**
 - [ ] GitHub CLI installed and accessible: `gh --version`
 - [ ] Git CLI installed and accessible: `git --version`
-- [ ] Platform-specific tools (to be determined): _______________
+- [ ] Python 3.11+ available: `python --version`
+- [ ] Node.js 18+ available: `node --version`
+- [ ] Azure CLI installed: `az --version`
+- [ ] Azure DevOps extension: `az extension list | grep azure-devops`
+- [ ] Git-TFS for TFS migrations: `git tfs --version`
+- [ ] Subversion client: `svn --version`
+- [ ] Perl interpreter: `perl --version`
+- [ ] GitLab CLI: `glab --version` (if available)
+- [ ] Python-GitLab library: `pip list | grep python-gitlab`
+- [ ] Chocolatey package manager: `choco --version`
 
 ⚠️ **CONFIRMATION REQUIRED**
-Base tools must be installed before platform assessment.
-Reply with: "Base migration tools verified and installed" to continue
+All migration tools must be installed before proceeding with platform-specific migration.
+Reply with: "All generic migration tools verified and installed" to continue
 
 ### Step 2: Source Platform Identification and Access
 🔧 **USER ACTION REQUIRED**

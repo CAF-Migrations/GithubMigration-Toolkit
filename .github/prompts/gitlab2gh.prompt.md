@@ -15,11 +15,11 @@ Migrate GitLab repositories, issues, merge requests, and CI/CD pipelines to GitH
 Verify and install required CLI tools for GitLab to GitHub migration:
 
 **Required CLI Tools:**
-- GitHub CLI (gh) with Enterprise Importer extension
-- GitLab CLI (glab)
+- GitHub CLI (gh) - No Enterprise Importer extension needed for GitLab migrations
 - Git CLI (git)
-- Python (for migration scripts)
-- Node.js/npm (for additional tools)
+- Python 3.11+ with python-gitlab library
+- Node.js 18+ (for custom migration scripts)
+- GitLab CLI (glab) - Optional, for GitLab API operations
 
 **Tool Installation Commands:**
 
@@ -30,11 +30,6 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 sudo apt update && sudo apt install gh
 # Note: GitLab migrations use third-party tools, no GitHub Enterprise Importer extension needed
 
-# GitLab CLI
-curl -s https://raw.githubusercontent.com/profclems/glab/trunk/scripts/install.sh | sudo bash
-# OR
-brew install glab  # macOS
-
 # Git
 sudo apt install git  # Linux
 brew install git      # macOS
@@ -43,41 +38,46 @@ brew install git      # macOS
 sudo apt install python3 python3-pip
 pip3 install python-gitlab
 
-# Node.js (for additional tools)
+# Node.js (for custom migration tools)
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
-npm install -g gitlab-to-github-migrator
+
+# GitLab CLI (optional)
+curl -s https://raw.githubusercontent.com/profclems/glab/trunk/scripts/install.sh | sudo bash
+# OR
+brew install glab  # macOS
 ```
 
 ```powershell
 # Windows PowerShell
-# GitHub CLI (ensure it's available or download from github.com/cli/cli)
+# GitHub CLI is pre-installed on GitHub-hosted runners
 gh --version
-# Note: GitLab migrations use third-party tools, no GitHub Enterprise Importer extension needed
+# Note: GitLab migrations use custom tools, no GitHub Enterprise Importer extension needed
 
-# GitLab CLI
-# Download from: https://github.com/profclems/glab/releases
-# Add to PATH
-
-# Git (typically pre-installed on development systems)
+# Git is pre-installed on GitHub-hosted runners
 git --version
 
-# Python (ensure Python is available or install from python.org)
+# Python 3.11+ setup (via GitHub Actions setup-python)
 python --version
 pip install python-gitlab
 
-# Node.js (ensure Node.js is available or install from nodejs.org)
+# Node.js 18+ setup (via GitHub Actions setup-node)
 node --version
-npm install -g gitlab-to-github-migrator
+# Note: gitlab-to-github-migrator npm package is not publicly available
+# Custom GitLab migration tools can be implemented using available APIs
+
+# GitLab CLI (optional - manual installation required)
+# Download from: https://github.com/profclems/glab/releases
+# Extract and add to PATH manually
 ```
 
 **Tool Verification Checklist:**
 - [ ] GitHub CLI installed: `gh --version`
-- [ ] GitHub Enterprise Importer extension: `gh extension list | grep migration`
-- [ ] GitLab CLI installed: `glab --version`
 - [ ] Git CLI accessible: `git --version`
-- [ ] Python available: `python3 --version` or `python --version`
+- [ ] Python 3.11+ available: `python --version`
 - [ ] Python-GitLab library: `pip list | grep python-gitlab`
+- [ ] Node.js 18+ available: `node --version`
+- [ ] GitLab CLI (optional): `glab --version` (if installed)
 - [ ] Node.js available: `node --version`
 
 ⚠️ **CONFIRMATION REQUIRED**
@@ -153,12 +153,13 @@ Install GitLab-specific migration tools:
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 # Note: GitLab migrations use third-party tools, no GitHub Enterprise Importer extension
 
-# GitLab CLI (glab)
+# GitLab CLI (glab) - Optional
 curl -s https://raw.githubusercontent.com/profclems/glab/trunk/scripts/install.sh | sudo bash
 
-# Additional tools
-npm install -g gitlab-to-github-migrator
+# Python GitLab library (primary migration tool)
 pip install python-gitlab
+# Note: gitlab-to-github-migrator npm package is not publicly available
+# Custom migration scripts can be developed using python-gitlab and GitHub CLI
 ```
 
 ⚠️ **CONFIRMATION REQUIRED**
