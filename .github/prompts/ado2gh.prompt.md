@@ -26,7 +26,7 @@ Verify and install required CLI tools for Azure DevOps to GitHub migration:
 # Windows PowerShell
 # GitHub CLI (download from github.com/cli/cli if not available)
 gh --version
-gh extension install github/gh-migration
+gh extension install github/gh-ado2gh
 
 # Azure CLI - Download MSI installer from Microsoft
 Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
@@ -48,7 +48,7 @@ git --version
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list
 sudo apt update && sudo apt install gh
-gh extension install github/gh-migration
+gh extension install github/gh-ado2gh
 
 # Azure CLI
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
@@ -138,9 +138,9 @@ Define migration scope:
 Install required migration tools:
 
 ```powershell
-# GitHub CLI with Enterprise Importer extension (ensure GitHub CLI is installed first)
+# GitHub CLI with Enterprise Importer ADO2GH extension (ensure GitHub CLI is installed first)
 gh --version  # Verify GitHub CLI is available
-gh extension install github/gh-migration
+gh extension install github/gh-ado2gh
 
 # Azure DevOps CLI  
 pip install azure-devops

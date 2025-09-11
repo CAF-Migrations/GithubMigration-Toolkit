@@ -57,7 +57,7 @@ Install required tools on a machine with Azure DevOps Server access:
 ```powershell
 # GitHub CLI (ensure it's available or download from github.com/cli/cli)
 gh --version
-gh extension install github/gh-migration
+gh extension install github/gh-ado2gh
 
 # Azure CLI - Download MSI installer from Microsoft
 Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi

@@ -43,12 +43,12 @@ jobs:
         Write-Host "GitHub CLI is available"
       shell: powershell
 
-    - name: Install GitHub Enterprise Importer extension
+    - name: Install GitHub Enterprise Importer ADO2GH extension (for TFS)
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh extension install github/gh-migration
-        Write-Host "GitHub Enterprise Importer extension installed"
+        gh extension install github/gh-ado2gh
+        Write-Host "GitHub Enterprise Importer ADO2GH extension installed (for TFS migrations)"
       shell: powershell
 
     - name: Install Git CLI
@@ -100,15 +100,15 @@ jobs:
         Write-Host "✅ GitHub CLI version verified"
       shell: powershell
 
-    - name: Verify GitHub Enterprise Importer extension
+    - name: Verify GitHub Enterprise Importer ADO2GH extension (for TFS)
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
         $extensions = gh extension list
-        if ($extensions -match "migration") {
-          Write-Host "✅ GitHub Enterprise Importer extension verified"
+        if ($extensions -match "ado2gh") {
+          Write-Host "✅ GitHub Enterprise Importer ADO2GH extension verified (for TFS migrations)"
         } else {
-          throw "❌ GitHub Enterprise Importer extension not found"
+          throw "❌ GitHub Enterprise Importer ADO2GH extension not found"
         }
       shell: powershell
 

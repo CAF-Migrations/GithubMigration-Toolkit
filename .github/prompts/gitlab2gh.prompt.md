@@ -28,7 +28,7 @@ Verify and install required CLI tools for GitLab to GitHub migration:
 # GitHub CLI
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 sudo apt update && sudo apt install gh
-gh extension install github/gh-migration
+# Note: GitLab migrations use third-party tools, no GitHub Enterprise Importer extension needed
 
 # GitLab CLI
 curl -s https://raw.githubusercontent.com/profclems/glab/trunk/scripts/install.sh | sudo bash
@@ -53,7 +53,7 @@ npm install -g gitlab-to-github-migrator
 # Windows PowerShell
 # GitHub CLI (ensure it's available or download from github.com/cli/cli)
 gh --version
-gh extension install github/gh-migration
+# Note: GitLab migrations use third-party tools, no GitHub Enterprise Importer extension needed
 
 # GitLab CLI
 # Download from: https://github.com/profclems/glab/releases
@@ -149,9 +149,9 @@ Please provide GitHub Enterprise details:
 Install GitLab-specific migration tools:
 
 ```bash
-# GitHub CLI with Enterprise Importer
+# GitHub CLI for target operations (no specific GitLab extension)
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-gh extension install github/gh-migration
+# Note: GitLab migrations use third-party tools, no GitHub Enterprise Importer extension
 
 # GitLab CLI (glab)
 curl -s https://raw.githubusercontent.com/profclems/glab/trunk/scripts/install.sh | sudo bash

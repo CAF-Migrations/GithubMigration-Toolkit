@@ -32,7 +32,7 @@ choco install gittfs
 # Core GitHub tools (verify availability first)
 gh --version       # GitHub CLI should be available
 git --version      # Git should be available
-gh extension install github/gh-migration
+gh extension install github/gh-ado2gh  # TFS uses ADO2GH extension
 
 # Verify git-tfs installation (CRITICAL)
 git tfs --version  # Should show git-tfs version
@@ -47,7 +47,7 @@ git tfs list-remote-branches <TFS_SERVER_URL>/<COLLECTION>
 # GitHub CLI
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 sudo apt update && sudo apt install gh
-gh extension install github/gh-migration
+gh extension install github/gh-ado2gh  # TFS uses ADO2GH extension
 
 # Git-TFS (requires Mono on Linux)
 sudo apt-get install mono-complete
@@ -139,9 +139,9 @@ choco install gittfs
 # TFS Power Tools (if needed)
 # Download from Microsoft
 
-# GitHub CLI with Enterprise Importer (verify availability first)
+# GitHub CLI with Enterprise Importer ADO2GH extension (verify availability first)
 gh --version  # Ensure GitHub CLI is available
-gh extension install github/gh-migration
+gh extension install github/gh-ado2gh  # TFS uses ADO2GH extension
 
 # TFS Migration Tools
 git clone https://github.com/nkdAgility/azure-devops-migration-tools.git

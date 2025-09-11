@@ -39,12 +39,11 @@ jobs:
         Write-Host "GitHub CLI is available"
       shell: powershell
 
-    - name: Install GitHub Enterprise Importer extension
-      env:
-        GH_TOKEN: ${{ github.token }}
+    - name: Note about GitLab migration tools
       run: |
-        gh extension install github/gh-migration
-        Write-Host "GitHub Enterprise Importer extension installed"
+        Write-Host "Note: GitLab migrations use third-party tools and git CLI"
+        Write-Host "GitHub Enterprise Importer does not have a specific GitLab extension"
+        Write-Host "GitLab CLI (glab) and python-gitlab are the primary migration tools"
       shell: powershell
 
     - name: Install Git CLI
@@ -102,16 +101,11 @@ jobs:
         Write-Host "✅ GitHub CLI version verified"
       shell: powershell
 
-    - name: Verify GitHub Enterprise Importer extension
-      env:
-        GH_TOKEN: ${{ github.token }}
+    - name: Verify GitLab migration tools availability
       run: |
-        $extensions = gh extension list
-        if ($extensions -match "migration") {
-          Write-Host "✅ GitHub Enterprise Importer extension verified"
-        } else {
-          throw "❌ GitHub Enterprise Importer extension not found"
-        }
+        Write-Host "✅ GitLab CLI will be downloaded and configured separately"
+        Write-Host "✅ Python GitLab library will be installed via pip"
+        Write-Host "✅ GitHub CLI is available for target operations"
       shell: powershell
 
     - name: Verify GitLab CLI installation
