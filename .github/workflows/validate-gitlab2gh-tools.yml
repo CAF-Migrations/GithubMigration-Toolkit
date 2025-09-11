@@ -40,6 +40,8 @@ jobs:
       shell: powershell
 
     - name: Install GitHub Enterprise Importer extension
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         gh extension install github/gh-migration
         Write-Host "GitHub Enterprise Importer extension installed"
@@ -101,6 +103,8 @@ jobs:
       shell: powershell
 
     - name: Verify GitHub Enterprise Importer extension
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         $extensions = gh extension list
         if ($extensions -match "migration") {
