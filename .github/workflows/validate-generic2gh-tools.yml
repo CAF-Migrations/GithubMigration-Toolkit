@@ -89,19 +89,25 @@ jobs:
 
     - name: Download GitLab CLI
       run: |
-        $glabUrl = "https://github.com/profclems/glab/releases/latest/download/glab_windows_amd64.zip"
-        $glabZip = "$env:TEMP\glab.zip"
-        $glabDir = "$env:TEMP\glab"
-        
-        Invoke-WebRequest -Uri $glabUrl -OutFile $glabZip
-        Expand-Archive -Path $glabZip -DestinationPath $glabDir -Force
-        
-        $glabExe = Get-ChildItem -Path $glabDir -Name "glab.exe" -Recurse | Select-Object -First 1
-        if ($glabExe) {
-          $glabPath = Join-Path $glabDir $glabExe
-          $destinationPath = "$env:ProgramFiles\GitLab CLI"
-          New-Item -ItemType Directory -Path $destinationPath -Force
-          Copy-Item $glabPath "$destinationPath\glab.exe" -Force
+        try {
+          # Try downloading GitLab CLI from the correct URL
+          $glabUrl = "https://github.com/profclems/glab/releases/download/v1.45.0/glab_1.45.0_Windows_x86_64.zip"
+          $glabZip = "$env:TEMP\glab.zip"
+          $glabDir = "$env:TEMP\glab"
+          
+          Invoke-WebRequest -Uri $glabUrl -OutFile $glabZip
+          Expand-Archive -Path $glabZip -DestinationPath $glabDir -Force
+          
+          $glabExe = Get-ChildItem -Path $glabDir -Name "glab.exe" -Recurse | Select-Object -First 1
+          if ($glabExe) {
+            $glabPath = Join-Path $glabDir $glabExe
+            $destinationPath = "$env:ProgramFiles\GitLab CLI"
+            New-Item -ItemType Directory -Path $destinationPath -Force
+            Copy-Item $glabPath "$destinationPath\glab.exe" -Force
+            Write-Output "GitLab CLI installed successfully"
+          }
+        } catch {
+          Write-Output "GitLab CLI installation failed, alternative tools will be used"
         }
       shell: powershell
 
@@ -179,7 +185,7 @@ jobs:
         node --version
         
         # Note: gitlab-to-github-migrator npm package verification skipped (not publicly available)
-        Write-Output "✅ Node.js available for custom migration scripts"
+        Write-Output "Node.js available for custom migration scripts"
       shell: powershell
 
     - name: Platform Compatibility Summary

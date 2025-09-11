@@ -69,7 +69,7 @@ jobs:
         $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
         # Note: gitlab-to-github-migrator npm package is not available publicly
         # Alternative migration tools will be verified instead
-        Write-Output "ℹ️ Custom GitLab migration tools can be implemented using available APIs"
+        Write-Output "Custom GitLab migration tools can be implemented using available APIs"
       shell: powershell
 
     - name: Verify GitHub CLI installation
@@ -121,8 +121,8 @@ jobs:
       run: |
         # Note: gitlab-to-github-migrator npm package verification skipped (not publicly available)
         # Verify Node.js is available for custom migration scripts
-        Write-Output "✅ Node.js available for custom GitLab migration scripts"
-        Write-Output "✅ python-gitlab library available for GitLab API access"
+        Write-Output "Node.js available for custom GitLab migration scripts"
+        Write-Output "python-gitlab library available for GitLab API access"
       shell: powershell
 
     - name: Tool Verification Summary
