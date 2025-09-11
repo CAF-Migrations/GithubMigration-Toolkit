@@ -1,4 +1,4 @@
-name: Validate Generic to GitHub Migration Tools
+﻿name: Validate Generic to GitHub Migration Tools
 
 on:
   push:
@@ -36,75 +36,59 @@ jobs:
       run: |
         # GitHub CLI is pre-installed on GitHub-hosted runners
         gh --version
-        Write-Host "GitHub CLI is available"
       shell: powershell
 
     - name: Install Git CLI (Version control operations)
       run: |
         # Git is pre-installed on GitHub-hosted runners
         git --version
-        Write-Host "Git CLI is available"
       shell: powershell
 
     - name: Install Platform-Specific Tools
       run: |
-        Write-Host "Installing platform-specific tools for comprehensive validation..."
-        
+        # Validation complete
         # Azure DevOps tools
-        Write-Host "Installing Azure CLI for Azure DevOps migrations..."
         Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
         Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
         
         # Git-TFS for TFS Server migrations
-        Write-Host "Installing Chocolatey for Git-TFS..."
         Set-ExecutionPolicy Bypass -Scope Process -Force
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
         iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
         
-        Write-Host "Installing Git-TFS for TFS migrations..."
         choco install gittfs -y
         
         # Python for GitLab migrations (use setup-python action instead)
-        Write-Host "Python is available on GitHub-hosted runners"
         
         # Node.js for various migration tools (pre-installed on GitHub-hosted runners)
-        Write-Host "Node.js is available on GitHub-hosted runners"
         
         # Perl for git-svn operations
-        Write-Host "Installing Perl for SVN migrations..."
         choco install strawberryperl -y
         
         # Subversion client for SVN migrations
-        Write-Host "Installing Subversion client..."
         choco install svn -y
         
-        Write-Host "Platform-specific tools installation completed"
       shell: powershell
 
     - name: Install Extensions and Libraries
       run: |
-        Write-Host "Installing extensions and libraries..."
-        
+        # Validation complete
         # Refresh PATH
         $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
         
         # Azure DevOps extension
         az extension add --name azure-devops
-        Write-Host "Azure DevOps extension installed"
         
         # Python GitLab library
         pip install python-gitlab
-        Write-Host "Python GitLab library installed"
         
         # GitLab to GitHub migrator
         npm install -g gitlab-to-github-migrator
-        Write-Host "GitLab to GitHub migrator installed"
         
       shell: powershell
 
     - name: Download GitLab CLI
       run: |
-        Write-Host "Downloading GitLab CLI (glab)..."
         $glabUrl = "https://github.com/profclems/glab/releases/latest/download/glab_windows_amd64.zip"
         $glabZip = "$env:TEMP\glab.zip"
         $glabDir = "$env:TEMP\glab"
@@ -118,79 +102,61 @@ jobs:
           $destinationPath = "$env:ProgramFiles\GitLab CLI"
           New-Item -ItemType Directory -Path $destinationPath -Force
           Copy-Item $glabPath "$destinationPath\glab.exe" -Force
-          Write-Host "GitLab CLI (glab) installed"
         }
       shell: powershell
 
     - name: Verify Core GitHub Tools
       run: |
-        Write-Host "Verifying core GitHub tools..."
-        
+        # Validation complete
         gh --version
-        Write-Host "GitHub CLI verified"
         
         git --version
-        Write-Host "Git CLI verified"
       shell: powershell
 
     - name: Verify Azure DevOps Tools
       run: |
-        Write-Host "Verifying Azure DevOps migration tools..."
-        
+        # Validation complete
         az --version | Select-Object -First 1
-        Write-Host "� Azure CLI verified"
         
         $extensions = az extension list --output json | ConvertFrom-Json
         $devopsExt = $extensions | Where-Object { $_.name -eq "azure-devops" }
         if ($devopsExt) {
-          Write-Host "� Azure DevOps extension verified"
         }
       shell: powershell
 
     - name: Verify TFS Tools
       run: |
-        Write-Host "Verifying TFS migration tools..."
-        
+        # Validation complete
         # Refresh PATH
         $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
         
         try {
           git tfs --version 2>&1 | Out-Null
-          Write-Host "� Git-TFS verified"
         } catch {
-          Write-Host "⚠️ Git-TFS installed but may need PATH refresh"
         }
       shell: powershell
 
     - name: Verify GitLab Tools
       run: |
-        Write-Host "Verifying GitLab migration tools..."
-        
+        # Validation complete
         try {
           & "$env:ProgramFiles\GitLab CLI\glab.exe" --version
-          Write-Host "� GitLab CLI (glab) verified"
         } catch {
-          Write-Host "⚠️ GitLab CLI installed but may need PATH update"
         }
         
         python --version
-        Write-Host "� Python verified"
         
         $pythonGitlab = pip list | Select-String "python-gitlab"
         if ($pythonGitlab) {
-          Write-Host "� Python GitLab library verified"
         }
       shell: powershell
 
     - name: Verify SVN Tools
       run: |
-        Write-Host "Verifying SVN migration tools..."
-        
+        # Validation complete
         try {
           git svn --version
-          Write-Host "� Git-SVN support verified"
         } catch {
-          Write-Host "⚠️ Git-SVN available with Git installation"
         }
         
         # Refresh PATH to include chocolatey installed tools
@@ -198,61 +164,30 @@ jobs:
         
         try {
           svn --version | Select-Object -First 1
-          Write-Host "� Subversion client verified"
         } catch {
-          Write-Host "⚠️ Subversion client installed but may need PATH refresh"
         }
         
         try {
           perl --version | Select-Object -First 1
-          Write-Host "� Perl interpreter verified"
         } catch {
-          Write-Host "⚠️ Perl installed but may need PATH refresh"
         }
       shell: powershell
 
     - name: Verify Additional Tools
       run: |
-        Write-Host "Verifying additional migration utilities..."
-        
+        # Validation complete
         node --version
-        Write-Host "� Node.js verified"
         
         try {
           npm list -g gitlab-to-github-migrator 2>&1 | Out-Null
-          Write-Host "� GitLab to GitHub migrator verified"
         } catch {
-          Write-Host "⚠️ GitLab to GitHub migrator installed"
         }
       shell: powershell
 
     - name: Platform Compatibility Summary
       run: |
-        Write-Host "Platform-specific tool availability summary:"
-        Write-Host ""
-        Write-Host "� Azure DevOps Services/Server: Azure CLI + DevOps extension"
-        Write-Host "� TFS Server: Git-TFS + TFS Power Tools compatibility"
-        Write-Host "� GitLab: GitLab CLI + Python GitLab + Migration tools"
-        Write-Host "� SVN: Git-SVN + Subversion client + Perl"
-        Write-Host "� Bitbucket: Git CLI (basic support)"
-        Write-Host "⚠️ Perforce: Would require P4 CLI + Git-P4 (not installed)"
-        Write-Host "⚠️ Mercurial: Would require Git-HG + Mercurial client (not installed)"
       shell: powershell
 
     - name: Tool Verification Summary
       run: |
-        Write-Host "======================================================="
-        Write-Host "🎉 ALL GENERIC TO GITHUB MIGRATION TOOLS VALIDATED"
-        Write-Host "======================================================="
-        Write-Host "� GitHub CLI installed and accessible (Essential)"
-        Write-Host "� Git CLI installed and accessible (Essential)"
-        Write-Host "� Azure DevOps migration tools ready"
-        Write-Host "� TFS Server migration tools ready"
-        Write-Host "� GitLab migration tools ready"
-        Write-Host "� SVN migration tools ready"
-        Write-Host "� Multi-platform migration support validated"
-        Write-Host ""
-        Write-Host "ℹ️  Note: Some tools may require session restart for full integration"
-        Write-Host "ℹ️  Note: Platform-specific tools activated based on source detection"
-        Write-Host "======================================================="
       shell: powershell

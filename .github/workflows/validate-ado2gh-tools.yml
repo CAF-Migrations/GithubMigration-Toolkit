@@ -1,4 +1,4 @@
-name: Validate Azure DevOps to GitHub Migration Tools
+Ôªøname: Validate Azure DevOps to GitHub Migration Tools
 
 on:
   push:
@@ -26,7 +26,6 @@ jobs:
       run: |
         # GitHub CLI is pre-installed on GitHub-hosted runners
         gh --version
-        Write-Host "GitHub CLI is available"
       shell: powershell
 
     - name: Install GitHub Enterprise Importer ADO2GH extension
@@ -34,33 +33,28 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         gh extension install github/gh-ado2gh
-        Write-Host "GitHub Enterprise Importer ADO2GH extension installed"
       shell: powershell
 
     - name: Install Azure CLI
       run: |
         Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
         Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
-        Write-Host "Azure CLI installed"
       shell: powershell
 
     - name: Install Azure DevOps extension
       run: |
         az extension add --name azure-devops
-        Write-Host "Azure DevOps extension installed"
       shell: powershell
 
     - name: Install Git CLI
       run: |
         # Git is pre-installed on GitHub-hosted runners
         git --version
-        Write-Host "Git CLI is available"
       shell: powershell
 
     - name: Verify GitHub CLI installation
       run: |
         gh --version
-        Write-Host "Ö GitHub CLI version verified"
       shell: powershell
 
     - name: Verify GitHub Enterprise Importer ADO2GH extension
@@ -69,7 +63,6 @@ jobs:
       run: |
         $extensions = gh extension list
         if ($extensions -match "ado2gh") {
-          Write-Host "Ö GitHub Enterprise Importer ADO2GH extension verified"
         } else {
           throw "‚ùå GitHub Enterprise Importer ADO2GH extension not found"
         }
@@ -78,7 +71,6 @@ jobs:
     - name: Verify Azure CLI installation
       run: |
         az --version
-        Write-Host "Ö Azure CLI version verified"
       shell: powershell
 
     - name: Verify Azure DevOps extension
@@ -86,7 +78,6 @@ jobs:
         $extensions = az extension list --output json | ConvertFrom-Json
         $devopsExt = $extensions | Where-Object { $_.name -eq "azure-devops" }
         if ($devopsExt) {
-          Write-Host "Ö Azure DevOps extension verified"
         } else {
           throw "‚ùå Azure DevOps extension not found"
         }
@@ -95,26 +86,14 @@ jobs:
     - name: Verify Git CLI installation
       run: |
         git --version
-        Write-Host "Ö Git CLI version verified"
       shell: powershell
 
     - name: Verify PowerShell availability
       run: |
         $PSVersionTable.PSVersion
-        Write-Host "Ö PowerShell version verified"
       shell: powershell
 
     - name: Tool Verification Summary
       run: |
-        Write-Host "==============================================="
-        Write-Host "üéâ ALL AZURE DEVOPS TO GITHUB MIGRATION TOOLS VALIDATED"
-        Write-Host "==============================================="
-        Write-Host "Ö GitHub CLI installed and accessible"
-        Write-Host "Ö GitHub Enterprise Importer extension installed"
-        Write-Host "Ö Azure CLI installed"
-        Write-Host "Ö Azure DevOps extension installed"
-        Write-Host "Ö Git CLI accessible"
-        Write-Host "Ö PowerShell available for scripting"
-        Write-Host "==============================================="
       shell: powershell
 

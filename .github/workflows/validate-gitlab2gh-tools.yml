@@ -1,4 +1,4 @@
-name: Validate GitLab to GitHub Migration Tools
+﻿name: Validate GitLab to GitHub Migration Tools
 
 on:
   push:
@@ -36,35 +36,24 @@ jobs:
       run: |
         # GitHub CLI is pre-installed on GitHub-hosted runners
         gh --version
-        Write-Host "GitHub CLI is available"
       shell: powershell
 
     - name: Note about GitLab migration tools
       run: |
-        Write-Host "Note: GitLab migrations use third-party tools and git CLI"
-        Write-Host "GitHub Enterprise Importer does not have a specific GitLab extension"
-        Write-Host "GitLab CLI (glab) and python-gitlab are the primary migration tools"
       shell: powershell
 
     - name: Install Git CLI
       run: |
         # Git is pre-installed on GitHub-hosted runners
         git --version
-        Write-Host "Git CLI is available"
       shell: powershell
 
     - name: Install GitLab CLI and python-gitlab
       run: |
-        Write-Host "Installing python-gitlab for GitLab API access..."
         pip install python-gitlab
         
-        Write-Host "Note: GitLab CLI (glab) would be installed via chocolatey in production:"
-        Write-Host "  choco install glab"
-        Write-Host "For this validation, we'll simulate glab installation"
         
         # Simulate glab installation check
-        Write-Host "� python-gitlab installed successfully"
-        Write-Host "� GitLab CLI installation simulated"
       shell: powershell
 
     - name: Install Python GitLab library
@@ -72,7 +61,6 @@ jobs:
         # Refresh PATH
         $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
         pip install python-gitlab
-        Write-Host "Python GitLab library installed"
       shell: powershell
 
     - name: Install GitLab to GitHub migrator (Node.js)
@@ -80,20 +68,15 @@ jobs:
         # Refresh PATH
         $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
         npm install -g gitlab-to-github-migrator
-        Write-Host "GitLab to GitHub migrator installed"
       shell: powershell
 
     - name: Verify GitHub CLI installation
       run: |
         gh --version
-        Write-Host "� GitHub CLI version verified"
       shell: powershell
 
     - name: Verify GitLab migration tools availability
       run: |
-        Write-Host "� GitLab CLI will be downloaded and configured separately"
-        Write-Host "� Python GitLab library will be installed via pip"
-        Write-Host "� GitHub CLI is available for target operations"
       shell: powershell
 
     - name: Verify GitLab CLI installation
@@ -103,9 +86,7 @@ jobs:
         
         try {
           & "$env:ProgramFiles\GitLab CLI\glab.exe" --version
-          Write-Host "� GitLab CLI (glab) version verified"
         } catch {
-          Write-Host "⚠️ GitLab CLI verification - checking installation"
           Test-Path "$env:ProgramFiles\GitLab CLI\glab.exe"
         }
       shell: powershell
@@ -113,20 +94,17 @@ jobs:
     - name: Verify Git CLI installation
       run: |
         git --version
-        Write-Host "� Git CLI version verified"
       shell: powershell
 
     - name: Verify Python installation
       run: |
         python --version
-        Write-Host "� Python version verified"
       shell: powershell
 
     - name: Verify Python GitLab library
       run: |
         $pythonGitlab = pip list | Select-String "python-gitlab"
         if ($pythonGitlab) {
-          Write-Host "� Python GitLab library verified: $pythonGitlab"
         } else {
           throw "❌ Python GitLab library not found"
         }
@@ -135,31 +113,18 @@ jobs:
     - name: Verify Node.js installation
       run: |
         node --version
-        Write-Host "� Node.js version verified"
       shell: powershell
 
     - name: Verify GitLab to GitHub migrator
       run: |
         try {
           npm list -g gitlab-to-github-migrator
-          Write-Host "� GitLab to GitHub migrator verified"
         } catch {
-          Write-Host "⚠️ GitLab to GitHub migrator - checking installation"
           npm list -g | Select-String "gitlab-to-github-migrator"
         }
       shell: powershell
 
     - name: Tool Verification Summary
       run: |
-        Write-Host "====================================================="
-        Write-Host "🎉 ALL GITLAB TO GITHUB MIGRATION TOOLS VALIDATED"
-        Write-Host "====================================================="
-        Write-Host "� GitHub CLI installed and accessible"
-        Write-Host "� GitHub Enterprise Importer extension installed"
-        Write-Host "� GitLab CLI (glab) installed"
-        Write-Host "� Git CLI accessible"
-        Write-Host "� Python available with python-gitlab library"
-        Write-Host "� Node.js available with gitlab-to-github-migrator"
-        Write-Host "====================================================="
       shell: powershell
 
