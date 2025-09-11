@@ -58,17 +58,6 @@ winget install Microsoft.AzureCLI; az extension add --name azure-devops  # Azure
 choco install gittfs  # TFS/TFVC (git-tfs)
 ```
 
-```bash
-# Linux/macOS - Core Tools
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-sudo apt update && sudo apt install gh git
-gh extension install github/gh-migration
-
-# Platform-Specific Tools
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash; az extension add --name azure-devops  # Azure DevOps
-sudo apt install git-svn subversion  # SVN
-```
-
 ## Usage
 
 1. Choose the appropriate prompt template from `.github/prompts/`
@@ -131,7 +120,7 @@ Each migration follows this pattern:
 
 #### CLI Tool Issues
 - **GitHub CLI not found**: Ensure GitHub CLI is in system PATH and restart terminal
-- **Git-TFS fails on Linux**: Use Windows or Windows Subsystem for Linux (WSL)
+- **Git-TFS requires Windows**: Use Windows or Windows Subsystem for Linux (WSL)
 - **Azure CLI authentication**: Run `az login` before migration operations
 - **GitLab CLI authentication**: Configure with `glab auth login` before starting
 - **SVN tools missing**: Install complete Subversion client, not just libraries

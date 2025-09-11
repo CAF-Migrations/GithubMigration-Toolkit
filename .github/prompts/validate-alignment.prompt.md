@@ -59,7 +59,6 @@ grep -E "choco install|pip install|gh extension install|Invoke-WebRequest|az ext
 - [ ] Tool Installation Commands section
 - [ ] Tool Verification Checklist section
 - [ ] Windows PowerShell commands
-- [ ] Linux/macOS alternatives (if applicable)
 
 #### 2.3 Command-Level Verification
 **Exact Command Matching:**
@@ -89,7 +88,6 @@ For any mismatches found:
 **Major Misalignments:**
 - Different command parameters
 - Missing verification steps
-- Inconsistent Windows/Linux command variations
 
 **Minor Misalignments:**
 - Comment differences
@@ -104,7 +102,6 @@ When fixing misalignments:
 2. ❌ **Do NOT modify workflow files**
 3. ✅ **Preserve prompt structure and explanations**
 4. ✅ **Maintain Windows-first approach**
-5. ✅ **Keep Linux/macOS alternatives where applicable**
 
 **Fixing Process:**
 ```markdown
@@ -191,7 +188,6 @@ grep "choco install strawberryperl" svn2gh.prompt.md
 - [ ] PATH environment variable handling is documented
 
 **Cross-Platform Validation:**
-- [ ] Linux/macOS alternatives provided where workflows don't support them
 - [ ] Platform limitations clearly documented
 - [ ] Alternative installation methods noted consistently
 
