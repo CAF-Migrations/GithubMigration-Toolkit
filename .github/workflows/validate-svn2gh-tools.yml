@@ -22,28 +22,37 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Install Chocolatey
+      run: |
+        Set-ExecutionPolicy Bypass -Scope Process -Force
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+        iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        Write-Host "Chocolatey installed"
+      shell: powershell
+
     - name: Install Git for Windows (includes git-svn)
       run: |
-        winget install Git.Git
-        Write-Host "Git for Windows installed (includes git-svn)"
+        # Git is pre-installed on GitHub-hosted runners
+        git --version
+        Write-Host "Git for Windows is available (includes git-svn)"
       shell: powershell
 
     - name: Install Subversion client
       run: |
-        # Install TortoiseSVN which includes command line tools
-        winget install TortoiseSVN.TortoiseSVN
-        Write-Host "TortoiseSVN installed (includes SVN command line tools)"
+        choco install svn -y
+        Write-Host "Subversion command line client installed"
       shell: powershell
 
     - name: Install GitHub CLI
       run: |
-        winget install GitHub.cli
-        Write-Host "GitHub CLI installed"
+        # GitHub CLI is pre-installed on GitHub-hosted runners
+        gh --version
+        Write-Host "GitHub CLI is available"
       shell: powershell
 
     - name: Install Strawberry Perl
       run: |
-        winget install StrawberryPerl.StrawberryPerl
+        choco install strawberryperl -y
         Write-Host "Strawberry Perl installed"
       shell: powershell
 

@@ -64,19 +64,19 @@ perl --version
 
 ```powershell
 # Windows PowerShell
-# Git for Windows (includes git-svn)
-winget install Git.Git
+# Git for Windows (includes git-svn) - usually pre-installed on development systems
+git --version
+git svn --version
 
-# Subversion client
-winget install CollabNet.Subversion-Client
-# OR
-choco install tortoisesvn  # Includes command line tools
+# Subversion client - install via Chocolatey or from CollabNet
+choco install svn  # Command line SVN client
+# OR download from: https://www.visualsvn.com/downloads/
 
-# GitHub CLI
-winget install GitHub.cli
+# GitHub CLI (ensure it's available or download from github.com/cli/cli)
+gh --version
 
-# Perl (if not included with Git)
-winget install StrawberryPerl.StrawberryPerl
+# Perl (if not included with Git) - install via Chocolatey
+choco install strawberryperl
 
 # Verify installations
 git --version

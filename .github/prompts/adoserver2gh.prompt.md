@@ -55,16 +55,17 @@ Install required tools on a machine with Azure DevOps Server access:
 **Installation Commands (Windows Server/Workstation):**
 
 ```powershell
-# GitHub CLI
-winget install GitHub.cli
+# GitHub CLI (ensure it's available or download from github.com/cli/cli)
+gh --version
 gh extension install github/gh-migration
 
-# Azure CLI with DevOps extension
-winget install Microsoft.AzureCLI
+# Azure CLI - Download MSI installer from Microsoft
+Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
+Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
 az extension add --name azure-devops
 
-# Git (if not already installed)
-winget install Git.Git
+# Git (typically pre-installed on development systems)
+git --version
 
 # Verify installations
 gh --version

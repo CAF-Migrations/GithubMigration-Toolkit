@@ -38,15 +38,21 @@ git --version
 
 ```powershell
 # Windows PowerShell
-# GitHub CLI
-winget install GitHub.cli
-
-# Git
-winget install Git.Git
-
-# Verify base installations
+# GitHub CLI (pre-installed on most systems, or download from github.com/cli/cli)
+# Verify GitHub CLI is available
 gh --version
+
+# Git (pre-installed on most development systems, or download from git-scm.com)
+# Verify Git is available
 git --version
+
+# Alternative installation methods if not available:
+# GitHub CLI: Download from https://github.com/cli/cli/releases
+# Git: Download from https://git-scm.com/downloads
+
+# For CI/CD environments like GitHub Actions:
+# - GitHub CLI and Git are pre-installed on GitHub-hosted runners
+# - For self-hosted runners, install manually or use package managers like Chocolatey
 ```
 
 **Platform-Specific Tool Requirements:**

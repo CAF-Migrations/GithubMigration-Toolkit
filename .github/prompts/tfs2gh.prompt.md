@@ -29,9 +29,9 @@ Verify and install required CLI tools for TFS to GitHub migration:
 choco install gittfs
 # OR download from: https://github.com/git-tfs/git-tfs/releases
 
-# Core GitHub tools
-winget install GitHub.cli
-winget install Git.Git
+# Core GitHub tools (verify availability first)
+gh --version       # GitHub CLI should be available
+git --version      # Git should be available
 gh extension install github/gh-migration
 
 # Verify git-tfs installation (CRITICAL)
@@ -139,8 +139,8 @@ choco install gittfs
 # TFS Power Tools (if needed)
 # Download from Microsoft
 
-# GitHub CLI with Enterprise Importer
-winget install GitHub.cli
+# GitHub CLI with Enterprise Importer (verify availability first)
+gh --version  # Ensure GitHub CLI is available
 gh extension install github/gh-migration
 
 # TFS Migration Tools

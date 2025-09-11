@@ -22,16 +22,28 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
     - name: Install GitHub CLI (Essential for all GitHub operations)
       run: |
-        winget install GitHub.cli
-        Write-Host "GitHub CLI installed"
+        # GitHub CLI is pre-installed on GitHub-hosted runners
+        gh --version
+        Write-Host "GitHub CLI is available"
       shell: powershell
 
     - name: Install Git CLI (Version control operations)
       run: |
-        winget install Git.Git
-        Write-Host "Git CLI installed"
+        # Git is pre-installed on GitHub-hosted runners
+        git --version
+        Write-Host "Git CLI is available"
       shell: powershell
 
     - name: Install Platform-Specific Tools
@@ -40,7 +52,8 @@ jobs:
         
         # Azure DevOps tools
         Write-Host "Installing Azure CLI for Azure DevOps migrations..."
-        winget install Microsoft.AzureCLI
+        Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
+        Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
         
         # Git-TFS for TFS Server migrations
         Write-Host "Installing Chocolatey for Git-TFS..."
@@ -51,21 +64,19 @@ jobs:
         Write-Host "Installing Git-TFS for TFS migrations..."
         choco install gittfs -y
         
-        # Python for GitLab migrations
-        Write-Host "Installing Python for GitLab migrations..."
-        winget install Python.Python.3.11
+        # Python for GitLab migrations (use setup-python action instead)
+        Write-Host "Python is available on GitHub-hosted runners"
         
-        # Node.js for various migration tools
-        Write-Host "Installing Node.js for migration utilities..."
-        winget install OpenJS.NodeJS
+        # Node.js for various migration tools (pre-installed on GitHub-hosted runners)
+        Write-Host "Node.js is available on GitHub-hosted runners"
         
         # Perl for git-svn operations
         Write-Host "Installing Perl for SVN migrations..."
-        winget install StrawberryPerl.StrawberryPerl
+        choco install strawberryperl -y
         
         # Subversion client for SVN migrations
         Write-Host "Installing Subversion client..."
-        winget install TortoiseSVN.TortoiseSVN
+        choco install svn -y
         
         Write-Host "Platform-specific tools installation completed"
       shell: powershell
@@ -182,14 +193,14 @@ jobs:
           Write-Host "⚠️ Git-SVN available with Git installation"
         }
         
+        # Refresh PATH to include chocolatey installed tools
+        $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+        
         try {
           svn --version | Select-Object -First 1
           Write-Host "✅ Subversion client verified"
         } catch {
-          $tortoisePath = "${env:ProgramFiles}\TortoiseSVN\bin"
-          if (Test-Path "$tortoisePath\svn.exe") {
-            Write-Host "✅ Subversion client found (TortoiseSVN)"
-          }
+          Write-Host "⚠️ Subversion client installed but may need PATH refresh"
         }
         
         try {

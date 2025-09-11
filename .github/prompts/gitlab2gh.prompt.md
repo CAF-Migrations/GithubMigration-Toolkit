@@ -51,23 +51,23 @@ npm install -g gitlab-to-github-migrator
 
 ```powershell
 # Windows PowerShell
-# GitHub CLI
-winget install GitHub.cli
+# GitHub CLI (ensure it's available or download from github.com/cli/cli)
+gh --version
 gh extension install github/gh-migration
 
 # GitLab CLI
 # Download from: https://github.com/profclems/glab/releases
 # Add to PATH
 
-# Git
-winget install Git.Git
+# Git (typically pre-installed on development systems)
+git --version
 
-# Python
-winget install Python.Python.3.11
+# Python (ensure Python is available or install from python.org)
+python --version
 pip install python-gitlab
 
-# Node.js
-winget install OpenJS.NodeJS
+# Node.js (ensure Node.js is available or install from nodejs.org)
+node --version
 npm install -g gitlab-to-github-migrator
 ```
 

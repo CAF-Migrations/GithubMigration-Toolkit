@@ -38,8 +38,9 @@ jobs:
 
     - name: Install GitHub CLI
       run: |
-        winget install GitHub.cli
-        Write-Host "GitHub CLI installed"
+        # GitHub CLI is pre-installed on GitHub-hosted runners
+        gh --version
+        Write-Host "GitHub CLI is available"
       shell: powershell
 
     - name: Install GitHub Enterprise Importer extension
@@ -50,8 +51,9 @@ jobs:
 
     - name: Install Git CLI
       run: |
-        winget install Git.Git
-        Write-Host "Git CLI installed"
+        # Git is pre-installed on GitHub-hosted runners
+        git --version
+        Write-Host "Git CLI is available"
       shell: powershell
 
     - name: Refresh PATH environment

@@ -22,10 +22,21 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
     - name: Install GitHub CLI
       run: |
-        winget install GitHub.cli
-        Write-Host "GitHub CLI installed"
+        # GitHub CLI is pre-installed on GitHub-hosted runners
+        gh --version
+        Write-Host "GitHub CLI is available"
       shell: powershell
 
     - name: Install GitHub Enterprise Importer extension
@@ -36,20 +47,9 @@ jobs:
 
     - name: Install Git CLI
       run: |
-        winget install Git.Git
-        Write-Host "Git CLI installed"
-      shell: powershell
-
-    - name: Install Python
-      run: |
-        winget install Python.Python.3.11
-        Write-Host "Python installed"
-      shell: powershell
-
-    - name: Install Node.js
-      run: |
-        winget install OpenJS.NodeJS
-        Write-Host "Node.js installed"
+        # Git is pre-installed on GitHub-hosted runners
+        git --version
+        Write-Host "Git CLI is available"
       shell: powershell
 
     - name: Download and Install GitLab CLI (glab)
