@@ -61,7 +61,8 @@ jobs:
 
     - name: Install Git-TFS (ESSENTIAL for TFVC with >90 days history)
       run: |
-        choco install gittfs
+        # Install git-tfs without git dependencies since Git is pre-installed
+        choco install gittfs --ignore-dependencies
         echo "C:/tools/gittfs" >> $GITHUB_PATH
       shell: bash
 
