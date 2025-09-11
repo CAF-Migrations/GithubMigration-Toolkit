@@ -6,7 +6,8 @@ Minimal GitHub Copilot prompts for migrating source control platforms to GitHub 
 
 | Source Platform | Prompt Template | Key Features |
 |---|---|---|
-| Azure DevOps Services/Server | `ado2gh.prompt.md` | Git repos, work items, Azure Pipelines → GitHub Actions |
+| Azure DevOps Services | `ado2gh.prompt.md` | Git repos, work items, Azure Pipelines → GitHub Actions |
+| **Azure DevOps Server (On-Premises)** | `adoserver2gh.prompt.md` | **Server-specific:** VPN/network, TFVC conversion, AD integration |
 | Team Foundation Server (TFS) | `tfs2gh.prompt.md` | **TFVC → Git** using git-tfs, work items, build definitions |
 | GitLab (Cloud/Self-hosted) | `gitlab2gh.prompt.md` | Issues, merge requests, GitLab CI → GitHub Actions |
 | Subversion (SVN) | `svn2gh.prompt.md` | SVN → Git conversion, trunk/branches/tags structure |
@@ -20,7 +21,8 @@ GithubMigration-Toolkit/
 ├── .github/
 │   ├── copilot-instructions.md        # Copilot behavior instructions
 │   └── prompts/
-│       ├── ado2gh.prompt.md           # Azure DevOps → GitHub Enterprise
+│       ├── ado2gh.prompt.md           # Azure DevOps Services → GitHub Enterprise
+│       ├── adoserver2gh.prompt.md     # Azure DevOps Server (On-Premises) → GitHub Enterprise
 │       ├── tfs2gh.prompt.md           # TFS/TFVC → GitHub Enterprise  
 │       ├── gitlab2gh.prompt.md        # GitLab → GitHub Enterprise
 │       ├── svn2gh.prompt.md           # Subversion → GitHub Enterprise
@@ -37,7 +39,8 @@ GithubMigration-Toolkit/
 
 | Source Platform | Key Tool | Purpose |
 |---|---|---|
-| **Azure DevOps** | `az devops` | Repository and work item access |
+| **Azure DevOps Services** | `az devops` | Repository and work item access |
+| **Azure DevOps Server** | `az devops` + VPN/Network | On-premises server access |
 | **TFS/TFVC** | **`git-tfs`** | **TFVC → Git conversion** |
 | **GitLab** | `glab` | GitLab API operations |
 | **SVN** | `git-svn` | SVN → Git conversion |
@@ -73,6 +76,13 @@ sudo apt install git-svn subversion  # SVN
 3. Follow human validation checkpoints  
 4. Confirm each phase before proceeding
 
+### Azure DevOps Server Special Notes
+- **On-premises server access** required (VPN/network connectivity)
+- **git-tfs** needed for TFVC repository conversion
+- **Windows environment** recommended for server connectivity
+- **Active Directory integration** for user mapping
+- **Collection-based** organization structure
+
 ### TFVC/TFS Special Notes
 - **git-tfs** is essential for TFVC repository conversion
 - Windows environment strongly recommended for TFS migrations
@@ -91,7 +101,8 @@ Each migration follows this pattern:
 
 ## Key Tools by Platform
 
-- **Azure DevOps**: GitHub Enterprise Importer + Azure CLI
+- **Azure DevOps Services**: GitHub Enterprise Importer + Azure CLI
+- **Azure DevOps Server**: Azure CLI + git-tfs (for TFVC) + Network/VPN access
 - **TFS/TFVC**: **git-tfs** (essential for TFVC conversion) + Team Explorer
 - **GitLab**: GitLab CLI + migration utilities  
 - **SVN**: git-svn + Subversion client
