@@ -138,12 +138,12 @@ jobs:
         Write-Host "Verifying Azure DevOps migration tools..."
         
         az --version | Select-Object -First 1
-        Write-Host "Ö Azure CLI verified"
+        Write-Host "ÔøΩ Azure CLI verified"
         
         $extensions = az extension list --output json | ConvertFrom-Json
         $devopsExt = $extensions | Where-Object { $_.name -eq "azure-devops" }
         if ($devopsExt) {
-          Write-Host "Ö Azure DevOps extension verified"
+          Write-Host "ÔøΩ Azure DevOps extension verified"
         }
       shell: powershell
 
@@ -156,7 +156,7 @@ jobs:
         
         try {
           git tfs --version 2>&1 | Out-Null
-          Write-Host "Ö Git-TFS verified"
+          Write-Host "ÔøΩ Git-TFS verified"
         } catch {
           Write-Host "‚ö†Ô∏è Git-TFS installed but may need PATH refresh"
         }
@@ -168,17 +168,17 @@ jobs:
         
         try {
           & "$env:ProgramFiles\GitLab CLI\glab.exe" --version
-          Write-Host "Ö GitLab CLI (glab) verified"
+          Write-Host "ÔøΩ GitLab CLI (glab) verified"
         } catch {
           Write-Host "‚ö†Ô∏è GitLab CLI installed but may need PATH update"
         }
         
         python --version
-        Write-Host "Ö Python verified"
+        Write-Host "ÔøΩ Python verified"
         
         $pythonGitlab = pip list | Select-String "python-gitlab"
         if ($pythonGitlab) {
-          Write-Host "Ö Python GitLab library verified"
+          Write-Host "ÔøΩ Python GitLab library verified"
         }
       shell: powershell
 
@@ -188,7 +188,7 @@ jobs:
         
         try {
           git svn --version
-          Write-Host "Ö Git-SVN support verified"
+          Write-Host "ÔøΩ Git-SVN support verified"
         } catch {
           Write-Host "‚ö†Ô∏è Git-SVN available with Git installation"
         }
@@ -198,14 +198,14 @@ jobs:
         
         try {
           svn --version | Select-Object -First 1
-          Write-Host "Ö Subversion client verified"
+          Write-Host "ÔøΩ Subversion client verified"
         } catch {
           Write-Host "‚ö†Ô∏è Subversion client installed but may need PATH refresh"
         }
         
         try {
           perl --version | Select-Object -First 1
-          Write-Host "Ö Perl interpreter verified"
+          Write-Host "ÔøΩ Perl interpreter verified"
         } catch {
           Write-Host "‚ö†Ô∏è Perl installed but may need PATH refresh"
         }
@@ -216,11 +216,11 @@ jobs:
         Write-Host "Verifying additional migration utilities..."
         
         node --version
-        Write-Host "Ö Node.js verified"
+        Write-Host "ÔøΩ Node.js verified"
         
         try {
           npm list -g gitlab-to-github-migrator 2>&1 | Out-Null
-          Write-Host "Ö GitLab to GitHub migrator verified"
+          Write-Host "ÔøΩ GitLab to GitHub migrator verified"
         } catch {
           Write-Host "‚ö†Ô∏è GitLab to GitHub migrator installed"
         }
@@ -230,11 +230,11 @@ jobs:
       run: |
         Write-Host "Platform-specific tool availability summary:"
         Write-Host ""
-        Write-Host "Ö Azure DevOps Services/Server: Azure CLI + DevOps extension"
-        Write-Host "Ö TFS Server: Git-TFS + TFS Power Tools compatibility"
-        Write-Host "Ö GitLab: GitLab CLI + Python GitLab + Migration tools"
-        Write-Host "Ö SVN: Git-SVN + Subversion client + Perl"
-        Write-Host "Ö Bitbucket: Git CLI (basic support)"
+        Write-Host "ÔøΩ Azure DevOps Services/Server: Azure CLI + DevOps extension"
+        Write-Host "ÔøΩ TFS Server: Git-TFS + TFS Power Tools compatibility"
+        Write-Host "ÔøΩ GitLab: GitLab CLI + Python GitLab + Migration tools"
+        Write-Host "ÔøΩ SVN: Git-SVN + Subversion client + Perl"
+        Write-Host "ÔøΩ Bitbucket: Git CLI (basic support)"
         Write-Host "‚ö†Ô∏è Perforce: Would require P4 CLI + Git-P4 (not installed)"
         Write-Host "‚ö†Ô∏è Mercurial: Would require Git-HG + Mercurial client (not installed)"
       shell: powershell
@@ -244,13 +244,13 @@ jobs:
         Write-Host "======================================================="
         Write-Host "üéâ ALL GENERIC TO GITHUB MIGRATION TOOLS VALIDATED"
         Write-Host "======================================================="
-        Write-Host "Ö GitHub CLI installed and accessible (Essential)"
-        Write-Host "Ö Git CLI installed and accessible (Essential)"
-        Write-Host "Ö Azure DevOps migration tools ready"
-        Write-Host "Ö TFS Server migration tools ready"
-        Write-Host "Ö GitLab migration tools ready"
-        Write-Host "Ö SVN migration tools ready"
-        Write-Host "Ö Multi-platform migration support validated"
+        Write-Host "ÔøΩ GitHub CLI installed and accessible (Essential)"
+        Write-Host "ÔøΩ Git CLI installed and accessible (Essential)"
+        Write-Host "ÔøΩ Azure DevOps migration tools ready"
+        Write-Host "ÔøΩ TFS Server migration tools ready"
+        Write-Host "ÔøΩ GitLab migration tools ready"
+        Write-Host "ÔøΩ SVN migration tools ready"
+        Write-Host "ÔøΩ Multi-platform migration support validated"
         Write-Host ""
         Write-Host "‚ÑπÔ∏è  Note: Some tools may require session restart for full integration"
         Write-Host "‚ÑπÔ∏è  Note: Platform-specific tools activated based on source detection"

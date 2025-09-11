@@ -54,7 +54,7 @@ jobs:
     - name: Verify GitHub CLI installation
       run: |
         gh --version
-        Write-Host "Ö GitHub CLI version verified"
+        Write-Host "ÔøΩ GitHub CLI version verified"
       shell: powershell
 
     - name: Verify GitHub Enterprise Importer BBS2GH extension
@@ -63,7 +63,7 @@ jobs:
       run: |
         $extensions = gh extension list
         if ($extensions -match "bbs2gh") {
-          Write-Host "Ö GitHub Enterprise Importer BBS2GH extension verified"
+          Write-Host "ÔøΩ GitHub Enterprise Importer BBS2GH extension verified"
         } else {
           throw "‚ùå GitHub Enterprise Importer BBS2GH extension not found"
         }
@@ -72,7 +72,7 @@ jobs:
     - name: Verify Git CLI installation
       run: |
         git --version
-        Write-Host "Ö Git CLI version verified"
+        Write-Host "ÔøΩ Git CLI version verified"
       shell: powershell
 
     - name: Test BBS2GH Extension Help
@@ -81,7 +81,7 @@ jobs:
       run: |
         try {
           gh bbs2gh --help | Out-Null
-          Write-Host "Ö BBS2GH extension help command works"
+          Write-Host "ÔøΩ BBS2GH extension help command works"
         } catch {
           Write-Host "‚ö†Ô∏è BBS2GH extension installed but help may need authentication context"
         }
@@ -110,15 +110,15 @@ jobs:
         Write-Host "======================================================="
         Write-Host "üéâ BITBUCKET SERVER TO GITHUB MIGRATION TOOLS VALIDATED"
         Write-Host "======================================================="
-        Write-Host "Ö GitHub CLI installed and accessible"
-        Write-Host "Ö GitHub Enterprise Importer BBS2GH extension ready"
-        Write-Host "Ö Git CLI installed and accessible"
-        Write-Host "Ö PowerShell available for migration scripts"
+        Write-Host "ÔøΩ GitHub CLI installed and accessible"
+        Write-Host "ÔøΩ GitHub Enterprise Importer BBS2GH extension ready"
+        Write-Host "ÔøΩ Git CLI installed and accessible"
+        Write-Host "ÔøΩ PowerShell available for migration scripts"
         Write-Host ""
         Write-Host "üìã Migration Capabilities:"
-        Write-Host "Ö BitBucket Server 5.14+ to GitHub Enterprise Cloud"
-        Write-Host "Ö BitBucket Data Center to GitHub Enterprise Cloud"
-        Write-Host "Ö Repository archives with SSH/SMB support"
+        Write-Host "ÔøΩ BitBucket Server 5.14+ to GitHub Enterprise Cloud"
+        Write-Host "ÔøΩ BitBucket Data Center to GitHub Enterprise Cloud"
+        Write-Host "ÔøΩ Repository archives with SSH/SMB support"
         Write-Host ""
         Write-Host "üîß Required Environment Variables for Migration:"
         Write-Host "   - GH_PAT: Target GitHub organization access token"

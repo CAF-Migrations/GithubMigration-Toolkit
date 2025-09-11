@@ -63,8 +63,8 @@ jobs:
         Write-Host "For this validation, we'll simulate glab installation"
         
         # Simulate glab installation check
-        Write-Host "Ö python-gitlab installed successfully"
-        Write-Host "Ö GitLab CLI installation simulated"
+        Write-Host "ÔøΩ python-gitlab installed successfully"
+        Write-Host "ÔøΩ GitLab CLI installation simulated"
       shell: powershell
 
     - name: Install Python GitLab library
@@ -86,14 +86,14 @@ jobs:
     - name: Verify GitHub CLI installation
       run: |
         gh --version
-        Write-Host "Ö GitHub CLI version verified"
+        Write-Host "ÔøΩ GitHub CLI version verified"
       shell: powershell
 
     - name: Verify GitLab migration tools availability
       run: |
-        Write-Host "Ö GitLab CLI will be downloaded and configured separately"
-        Write-Host "Ö Python GitLab library will be installed via pip"
-        Write-Host "Ö GitHub CLI is available for target operations"
+        Write-Host "ÔøΩ GitLab CLI will be downloaded and configured separately"
+        Write-Host "ÔøΩ Python GitLab library will be installed via pip"
+        Write-Host "ÔøΩ GitHub CLI is available for target operations"
       shell: powershell
 
     - name: Verify GitLab CLI installation
@@ -103,7 +103,7 @@ jobs:
         
         try {
           & "$env:ProgramFiles\GitLab CLI\glab.exe" --version
-          Write-Host "Ö GitLab CLI (glab) version verified"
+          Write-Host "ÔøΩ GitLab CLI (glab) version verified"
         } catch {
           Write-Host "‚ö†Ô∏è GitLab CLI verification - checking installation"
           Test-Path "$env:ProgramFiles\GitLab CLI\glab.exe"
@@ -113,20 +113,20 @@ jobs:
     - name: Verify Git CLI installation
       run: |
         git --version
-        Write-Host "Ö Git CLI version verified"
+        Write-Host "ÔøΩ Git CLI version verified"
       shell: powershell
 
     - name: Verify Python installation
       run: |
         python --version
-        Write-Host "Ö Python version verified"
+        Write-Host "ÔøΩ Python version verified"
       shell: powershell
 
     - name: Verify Python GitLab library
       run: |
         $pythonGitlab = pip list | Select-String "python-gitlab"
         if ($pythonGitlab) {
-          Write-Host "Ö Python GitLab library verified: $pythonGitlab"
+          Write-Host "ÔøΩ Python GitLab library verified: $pythonGitlab"
         } else {
           throw "‚ùå Python GitLab library not found"
         }
@@ -135,14 +135,14 @@ jobs:
     - name: Verify Node.js installation
       run: |
         node --version
-        Write-Host "Ö Node.js version verified"
+        Write-Host "ÔøΩ Node.js version verified"
       shell: powershell
 
     - name: Verify GitLab to GitHub migrator
       run: |
         try {
           npm list -g gitlab-to-github-migrator
-          Write-Host "Ö GitLab to GitHub migrator verified"
+          Write-Host "ÔøΩ GitLab to GitHub migrator verified"
         } catch {
           Write-Host "‚ö†Ô∏è GitLab to GitHub migrator - checking installation"
           npm list -g | Select-String "gitlab-to-github-migrator"
@@ -154,12 +154,12 @@ jobs:
         Write-Host "====================================================="
         Write-Host "üéâ ALL GITLAB TO GITHUB MIGRATION TOOLS VALIDATED"
         Write-Host "====================================================="
-        Write-Host "Ö GitHub CLI installed and accessible"
-        Write-Host "Ö GitHub Enterprise Importer extension installed"
-        Write-Host "Ö GitLab CLI (glab) installed"
-        Write-Host "Ö Git CLI accessible"
-        Write-Host "Ö Python available with python-gitlab library"
-        Write-Host "Ö Node.js available with gitlab-to-github-migrator"
+        Write-Host "ÔøΩ GitHub CLI installed and accessible"
+        Write-Host "ÔøΩ GitHub Enterprise Importer extension installed"
+        Write-Host "ÔøΩ GitLab CLI (glab) installed"
+        Write-Host "ÔøΩ Git CLI accessible"
+        Write-Host "ÔøΩ Python available with python-gitlab library"
+        Write-Host "ÔøΩ Node.js available with gitlab-to-github-migrator"
         Write-Host "====================================================="
       shell: powershell
 

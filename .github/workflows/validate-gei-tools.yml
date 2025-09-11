@@ -47,7 +47,7 @@ jobs:
     - name: Verify GitHub CLI installation
       run: |
         gh --version
-        Write-Host "Ö GitHub CLI version verified"
+        Write-Host "ÔøΩ GitHub CLI version verified"
       shell: powershell
 
     - name: Verify GitHub Enterprise Importer GEI extension
@@ -56,7 +56,7 @@ jobs:
       run: |
         $extensions = gh extension list
         if ($extensions -match "gei") {
-          Write-Host "Ö GitHub Enterprise Importer GEI extension verified"
+          Write-Host "ÔøΩ GitHub Enterprise Importer GEI extension verified"
         } else {
           throw "‚ùå GitHub Enterprise Importer GEI extension not found"
         }
@@ -65,7 +65,7 @@ jobs:
     - name: Verify Git CLI installation
       run: |
         git --version
-        Write-Host "Ö Git CLI version verified"
+        Write-Host "ÔøΩ Git CLI version verified"
       shell: powershell
 
     - name: Test GEI Extension Help
@@ -74,7 +74,7 @@ jobs:
       run: |
         try {
           gh gei --help | Out-Null
-          Write-Host "Ö GEI extension help command works"
+          Write-Host "ÔøΩ GEI extension help command works"
         } catch {
           Write-Host "‚ö†Ô∏è GEI extension installed but help may need authentication context"
         }
@@ -85,14 +85,14 @@ jobs:
         Write-Host "======================================================="
         Write-Host "üéâ GITHUB TO GITHUB MIGRATION TOOLS VALIDATED"
         Write-Host "======================================================="
-        Write-Host "Ö GitHub CLI installed and accessible"
-        Write-Host "Ö GitHub Enterprise Importer GEI extension ready"
-        Write-Host "Ö Git CLI installed and accessible"
+        Write-Host "ÔøΩ GitHub CLI installed and accessible"
+        Write-Host "ÔøΩ GitHub Enterprise Importer GEI extension ready"
+        Write-Host "ÔøΩ Git CLI installed and accessible"
         Write-Host ""
         Write-Host "üìã Migration Capabilities:"
-        Write-Host "Ö GitHub.com to GitHub Enterprise Cloud"
-        Write-Host "Ö GitHub Enterprise Server to GitHub Enterprise Cloud"
-        Write-Host "Ö GitHub.com to GitHub.com (organization transfers)"
+        Write-Host "ÔøΩ GitHub.com to GitHub Enterprise Cloud"
+        Write-Host "ÔøΩ GitHub Enterprise Server to GitHub Enterprise Cloud"
+        Write-Host "ÔøΩ GitHub.com to GitHub.com (organization transfers)"
         Write-Host ""
         Write-Host "üîß Required Environment Variables for Migration:"
         Write-Host "   - GH_SOURCE_PAT: Source GitHub organization access token"
