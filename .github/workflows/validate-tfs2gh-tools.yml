@@ -111,7 +111,7 @@ jobs:
         $extensions = gh extension list
         if ($extensions -match "ado2gh") {
         } else {
-          throw "❌ GitHub Enterprise Importer ADO2GH extension not found"
+          throw "ERROR: GitHub Enterprise Importer ADO2GH extension not found"
         }
       shell: powershell
 
@@ -137,12 +137,12 @@ jobs:
         
         # Check if output contains expected help content
         if ($helpOutput -match "usage|commands|help|clone|pull|push" -or $helpExitCode -eq 0) {
-          Write-Output "✅ git-tfs help command executed successfully"
-          Write-Output "✅ git-tfs is functional and ready for TFS migrations"
+          Write-Output "SUCCESS: git-tfs help command executed successfully"
+          Write-Output "SUCCESS: git-tfs is functional and ready for TFS migrations"
         } else {
-          Write-Output "⚠️ git-tfs help output unexpected:"
+          Write-Output "WARNING: git-tfs help output unexpected:"
           Write-Output $helpOutput
-          Write-Output "⚠️ git-tfs may require specific TFS configuration for full functionality"
+          Write-Output "WARNING: git-tfs may require specific TFS configuration for full functionality"
         }
         
         # Always succeed this step since git-tfs help can return non-zero exit codes
@@ -152,7 +152,7 @@ jobs:
 
     - name: Verify Windows environment (highly recommended for TFS)
       run: |
-        Write-Output "🖥️ GitHub Runner Environment Information:"
+        Write-Output "SYSTEM: GitHub Runner Environment Information:"
         Write-Output "PowerShell Version: $($PSVersionTable.PSVersion)"
         Write-Output "OS Version: $([System.Environment]::OSVersion)"
         Write-Output "Runner Image: $env:ImageOS"
@@ -164,12 +164,12 @@ jobs:
 
     - name: Tool Verification Summary
       run: |
-        Write-Output "🔧 TFS to GitHub Migration Tools Validation Complete"
-        Write-Output "✅ Git-TFS: Installed and functional"
-        Write-Output "✅ GitHub CLI: Available"
-        Write-Output "✅ GitHub Enterprise Importer (ADO2GH): Installed"
-        Write-Output "✅ Git CLI: Available"
-        Write-Output "✅ Windows PowerShell: $($PSVersionTable.PSVersion)"
+        Write-Output "SUMMARY: TFS to GitHub Migration Tools Validation Complete"
+        Write-Output "SUCCESS: Git-TFS: Installed and functional"
+        Write-Output "SUCCESS: GitHub CLI: Available"
+        Write-Output "SUCCESS: GitHub Enterprise Importer (ADO2GH): Installed"
+        Write-Output "SUCCESS: Git CLI: Available"
+        Write-Output "SUCCESS: Windows PowerShell: $($PSVersionTable.PSVersion)"
         Write-Output ""
-        Write-Output "🚀 Environment ready for TFS to GitHub migrations!"
+        Write-Output "READY: Environment ready for TFS to GitHub migrations!"
       shell: powershell
