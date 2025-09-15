@@ -10,8 +10,17 @@ Minimal GitHub Copilot prompts for migrating source control platforms to GitHub 
 | **Azure DevOps Server (On-Premises)** | `adoserver2gh.prompt.md` | **Server-specific:** VPN/network, TFVC conversion, AD integration |
 | Team Foundation Server (TFS) | `tfs2gh.prompt.md` | **TFVC → Git** using git-tfs, work items, build definitions |
 | GitLab (Cloud/Self-hosted) | `gitlab2gh.prompt.md` | Issues, merge requests, GitLab CI → GitHub Actions |
+| **Bitbucket Server** | `bbs2gh.prompt.md` | **Bitbucket repos**, pull requests, Bamboo CI integration |
 | Subversion (SVN) | `svn2gh.prompt.md` | SVN → Git conversion, trunk/branches/tags structure |
+| **GitHub Enterprise Importer** | `gei.prompt.md` | **Direct GEI operations** for supported platforms |
 | Generic/Other Platforms | `generic2gh.prompt.md` | Adaptable template for any source control system |
+
+## Utility Prompts
+
+| Utility | Prompt Template | Purpose |
+|---|---|---|
+| **Health Check** | `health.prompt.md` | **Pre-migration validation** of tools, access, and environment |
+| **Post-Migration Validation** | `validate.prompt.md` | **Comprehensive validation** of migrated repositories and access |
 
 ## File Structure
 
@@ -25,8 +34,12 @@ GithubMigration-Toolkit/
 │       ├── adoserver2gh.prompt.md     # Azure DevOps Server (On-Premises) → GitHub Enterprise
 │       ├── tfs2gh.prompt.md           # TFS/TFVC → GitHub Enterprise  
 │       ├── gitlab2gh.prompt.md        # GitLab → GitHub Enterprise
+│       ├── bbs2gh.prompt.md           # Bitbucket Server → GitHub Enterprise
 │       ├── svn2gh.prompt.md           # Subversion → GitHub Enterprise
-│       └── generic2gh.prompt.md       # Generic → GitHub Enterprise
+│       ├── gei.prompt.md              # GitHub Enterprise Importer operations
+│       ├── generic2gh.prompt.md       # Generic → GitHub Enterprise
+│       ├── health.prompt.md           # Pre-migration health checks
+│       └── validate.prompt.md         # Post-migration validation
 ```
 
 ## Essential CLI Tools
@@ -43,7 +56,9 @@ GithubMigration-Toolkit/
 | **Azure DevOps Server** | `az devops` + VPN/Network | On-premises server access |
 | **TFS/TFVC** | **`git-tfs`** | **TFVC → Git conversion** |
 | **GitLab** | `glab` | GitLab API operations |
+| **Bitbucket Server** | `gh bbs2gh` | Bitbucket Server migration extension |
 | **SVN** | `git-svn` | SVN → Git conversion |
+| **GitHub Enterprise Importer** | `gh gei` | Direct platform migrations |
 
 ### Quick Install Commands
 
@@ -56,16 +71,19 @@ gh extension install github/gh-migration
 # Platform-Specific Tools
 winget install Microsoft.AzureCLI; az extension add --name azure-devops  # Azure DevOps
 choco install gittfs  # TFS/TFVC (git-tfs)
+gh extension install github/gh-bbs2gh  # Bitbucket Server
 ```
 
 ## Usage
 
-1. Choose the appropriate prompt template from `.github/prompts/`
-2. Use with GitHub Copilot for guided migration
-3. Follow human validation checkpoints  
-4. Confirm each phase before proceeding
+### Migration Workflow
+1. **Health Check**: Start with `health.prompt.md` to validate environment and tools
+2. **Choose Migration**: Select the appropriate prompt template from `.github/prompts/`
+3. **Execute Migration**: Use with GitHub Copilot for guided migration
+4. **Validate Results**: Use `validate.prompt.md` for post-migration verification
+5. **Follow Checkpoints**: Confirm each phase before proceeding
 
-### Azure DevOps Server Special Notes
+### Platform-Specific Guidance Azure DevOps Server Special Notes
 - **On-premises server access** required (VPN/network connectivity)
 - **git-tfs** needed for TFVC repository conversion
 - **Windows environment** recommended for server connectivity
@@ -76,6 +94,18 @@ choco install gittfs  # TFS/TFVC (git-tfs)
 - **git-tfs** is essential for TFVC repository conversion
 - Windows environment strongly recommended for TFS migrations
 - Requires Visual Studio Team Explorer or TFS connectivity
+
+### Bitbucket Server Special Notes
+- **gh bbs2gh extension** required for Bitbucket Server migrations
+- **Server access** needed for API operations
+- **Pull request history** preserved during migration
+- **Bamboo CI pipelines** require manual conversion to GitHub Actions
+
+### GitHub Enterprise Importer (GEI) Notes
+- **Direct migrations** from supported platforms (ADO, GitLab, etc.)
+- **Automated workflows** with less manual intervention
+- **Bulk operations** for large-scale migrations
+- **Built-in validation** and error handling
 
 ## Human-Validated Workflow
 
@@ -94,7 +124,9 @@ Each migration follows this pattern:
 - **Azure DevOps Server**: Azure CLI + git-tfs (for TFVC) + Network/VPN access
 - **TFS/TFVC**: **git-tfs** (essential for TFVC conversion) + Team Explorer
 - **GitLab**: GitLab CLI + migration utilities  
+- **Bitbucket Server**: GitHub CLI + BBS2GH extension
 - **SVN**: git-svn + Subversion client
+- **GitHub Enterprise Importer**: GitHub CLI + GEI extension for automated migrations
 
 ## Success Criteria
 
