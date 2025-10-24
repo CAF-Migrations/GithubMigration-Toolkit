@@ -5,7 +5,7 @@ description: 'DEMO: Azure DevOps to GitHub Enterprise Migration (Simulated)'
 
 # ADO to GitHub Migration - DEMO MODE
 
-**This is a demonstration workflow. All actions are simulated with mock data.**
+**This is a dry-run demonstration workflow. All actions are simulated with mock data—no actual repositories will be migrated.**
 
 ## Phase 1: Tool Installation
 
